@@ -4,15 +4,12 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class LongIdGenerator extends Generator<Long> {
     private long id = 0;
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().contains("id");
+        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("id");
     }
 
     @Override

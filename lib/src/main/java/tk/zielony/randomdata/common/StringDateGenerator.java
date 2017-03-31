@@ -8,9 +8,6 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class StringDateGenerator extends Generator<String> {
     private static SimpleDateFormat format = new SimpleDateFormat("HH:mm, dd MMM");
     private Random random = new Random();

@@ -11,13 +11,9 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
-
 public class RandomData {
 
-    static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+    private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
 
     private static class GeneratorWithPriority implements Comparable<GeneratorWithPriority> {
         Generator generator;

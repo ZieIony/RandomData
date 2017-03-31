@@ -9,7 +9,7 @@ import tk.zielony.randomdata.Matcher;
 /**
  * Created by Marcin on 27.03.2017.
  */
-public class LongPhoneGenerator extends Generator<Integer> {
+public class StringPhoneGenerator extends Generator<String> {
     private Random random = new Random();
 
     @Override
@@ -18,7 +18,7 @@ public class LongPhoneGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
-        return random.nextInt(900000000) + 1000000000;
+    public String next(DataContext context) {
+        return ""+(random.nextInt(900000000) + 1000000000);
     }
 }

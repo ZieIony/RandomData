@@ -2,9 +2,6 @@ package tk.zielony.randomdata;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public abstract class Generator<Type> {
     private Matcher matcher;
 

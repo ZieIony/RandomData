@@ -6,13 +6,11 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
-public class IntegerGenerator extends Generator<Boolean> {
+public class IntegerGenerator extends Generator<Integer> {
     private Random random = new Random();
-    private final int min;
-    private final int max;
+    private int min;
+    private int max;
+    private int[] array;
 
     public IntegerGenerator() {
         min = 0;
@@ -24,13 +22,18 @@ public class IntegerGenerator extends Generator<Boolean> {
         this.max = max;
     }
 
-    @Override
-    protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(int.class) || f.getType().equals(Integer.class)) || f.getType().equals(Integer.class);
+    public IntegerGenerator(int[] array) {
+        this.array = array;
     }
 
     @Override
-    public Boolean next(DataContext context) {
-        return random.nextBoolean();
+    protected Matcher getDefaultMatcher() {
+        return f -> f.getType().equals(int.class) || f.getType().equals(Integer.class) ||
+                f.getType().equals(long.class) || f.getType().equals(Long.class);
+    }
+
+    @Override
+    public Integer next(DataContext context) {
+        return array != null ? array[random.nextInt(array.length)] : random.nextInt(max + 1 - min) + min;
     }
 }

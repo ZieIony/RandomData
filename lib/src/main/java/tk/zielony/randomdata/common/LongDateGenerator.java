@@ -6,9 +6,6 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class LongDateGenerator extends Generator<Long> {
     private Random random = new Random();
     private static final int WEEK = 7 * 24 * 60 * 60 * 1000;
