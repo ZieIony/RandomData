@@ -1,6 +1,6 @@
 # RandomData
 
-Your test/mock screens would look much better with some real data. RandomData automatically fills your structures with generated, random names, numbers, images, etc.
+Your test/mock screens would look much better with some real data. RandomData automatically fills your structures with generated, random names, numbers, images, etc. RandomData uses data libraries, validating algorithms and keeps track of a context to make sure that every bit of generated data is consistent and makes sense. Did you notice that a female name always comes with a picture of a woman? :)
 
 Before you start, make sure to check out https://www.pexels.com/ - very nice site with free stock photos :)
 
@@ -11,18 +11,17 @@ Before you start, make sure to check out https://www.pexels.com/ - very nice sit
 
 Add JitPack to your main build.gradle:
 
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+    allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
     
 Add RandomData to your project's dependencies:
     
     dependencies {
-	    compile 'com.github.ZieIony:RandomData:926c64a3ca'
-	}
+        compile 'com.github.ZieIony:RandomData:926c64a3ca'
+    }
 
 ### Usage
 
