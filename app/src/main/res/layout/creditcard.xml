@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="tk.zielony.randomdata.test.CreditCardItem" />
+
+    </data>
+
+    <carbon.widget.FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/carbon_padding">
+
+        <carbon.widget.FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@{data.image}"
+            app:carbon_cornerRadius="8dp"
+            app:carbon_elevation="4dp">
+
+            <carbon.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/carbon_margin"
+                android:layout_marginRight="@dimen/carbon_margin"
+                android:layout_marginTop="@dimen/carbon_margin"
+                android:ellipsize="end"
+                android:shadowColor="#ff000000"
+                android:shadowDx="1.0"
+                android:shadowDy="1.0"
+                android:shadowRadius="2.0"
+                android:maxLines="1"
+                android:text="@{data.amount}"
+                android:textAppearance="?attr/carbon_textAppearanceHeadlineInverse" />
+
+            <carbon.widget.LinearLayout
+                android:id="@+id/scrim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#ffffffff"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/carbon_paddingHalf"
+                android:paddingTop="@dimen/carbon_paddingHalf">
+
+                <carbon.widget.TextView
+                    android:id="@+id/carbon_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/carbon_margin"
+                    android:layout_marginLeft="@dimen/carbon_margin"
+                    android:layout_marginRight="@dimen/carbon_margin"
+                    android:layout_marginStart="@dimen/carbon_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{data.name}"
+                    android:textAppearance="?attr/carbon_textAppearanceBody1Inverse" />
+
+                <carbon.widget.TextView
+                    android:id="@+id/carbon_subtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/carbon_margin"
+                    android:layout_marginLeft="@dimen/carbon_margin"
+                    android:layout_marginRight="@dimen/carbon_margin"
+                    android:layout_marginStart="@dimen/carbon_margin"
+                    android:maxLines="1"
+                    android:text="@{data.number}"
+                    android:textAppearance="?attr/carbon_textAppearanceCaptionInverse" />
+            </carbon.widget.LinearLayout>
+        </carbon.widget.FrameLayout>
+    </carbon.widget.FrameLayout>
+</layout>

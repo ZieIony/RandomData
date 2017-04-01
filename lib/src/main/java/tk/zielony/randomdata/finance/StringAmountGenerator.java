@@ -27,6 +27,6 @@ public class StringAmountGenerator extends AmountGenerator<String> {
     @Override
     public String next(DataContext context) {
         Currency currency = Currency.getInstance(Locale.getDefault());
-        return String.format(Locale.getDefault(), "%s %f.2", currency.getSymbol(), next2(context));
+        return String.format(Locale.getDefault(), "%s %.2f", currency.getSymbol(), next2(context));
     }
 }

@@ -20,7 +20,7 @@ public class DrawableImageGenerator extends Generator<Drawable> {
     private Set<Integer> used = new HashSet<>();
 
     private int[] images = {
-            R.drawable.woman0, R.drawable.woman1, R.drawable.woman2, R.drawable.woman3, R.drawable.woman4, R.drawable.woman5, R.drawable.woman6, R.drawable.woman7, R.drawable.woman8, R.drawable.woman9
+            R.drawable.background0, R.drawable.background1, R.drawable.background2, R.drawable.background3, R.drawable.background4
     };
 
     public DrawableImageGenerator(Context context) {

@@ -5,6 +5,7 @@ Your test/mock screens would look much better with some real data. RandomData ge
 Before you start, make sure to check out https://www.pexels.com/ - very nice site with free stock photos :)
 
 ![Screenshot](https://github.com/ZieIony/RandomData/blob/master/images/screenshot.png)
+![Screenshot2](https://github.com/ZieIony/RandomData/blob/master/images/screenshot2.png)
 
 ### Usage
 
