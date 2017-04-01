@@ -1,11 +1,28 @@
 # RandomData
 
-Your test/mock screens would look much better with some real data. RandomData generates random data and fills your POJOs with them.
+Your test/mock screens would look much better with some real data. RandomData automatically fills your structures with generated, random names, numbers, images, etc.
 
 Before you start, make sure to check out https://www.pexels.com/ - very nice site with free stock photos :)
 
 ![Screenshot](https://github.com/ZieIony/RandomData/blob/master/images/screenshot.png)
 ![Screenshot2](https://github.com/ZieIony/RandomData/blob/master/images/screenshot2.png)
+
+### Setup
+
+Add JitPack to your main build.gradle:
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+    
+Add RandomData to your project's dependencies:
+    
+    dependencies {
+	    compile 'com.github.ZieIony:RandomData:926c64a3ca'
+	}
 
 ### Usage
 
@@ -30,7 +47,7 @@ Fill your objects with data. There's no need to initialize arrays:
 
     User[] items = new User[10];
     randomData.fill(items);
-
+    
 ### FAQ
 
 ##### 1. Where did you get these nice recycler rows from?
