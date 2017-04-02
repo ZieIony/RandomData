@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 import carbon.component.AvatarTextSubtext2DateRow;
 import carbon.component.DefaultAvatarTextSubtextDateItem;
+import carbon.component.DefaultHeaderItem;
+import carbon.component.HeaderRow;
 import carbon.recycler.RowListAdapter;
 import carbon.widget.RecyclerView;
 import tk.zielony.randomdata.Generator;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
         adapter = new RowListAdapter<>(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow.FACTORY);
+        adapter.addFactory(DefaultHeaderItem.class, HeaderRow.FACTORY);
         adapter.addFactory(CreditCardItem.class, CreditCardRow.FACTORY);
         recycler.setAdapter(adapter);
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         randomData = new RandomData();
         randomData.addGenerators(new Generator[]{
-                new StringNameGenerator(Gender.Both).withMatcher(f -> f.getName().equals("text") || f.getName().equals("name")),
+                new StringNameGenerator(Gender.Both).withMatcher(f -> f.getName().equals("text") && f.getDeclaringClass().equals(DefaultAvatarTextSubtextDateItem.class) || f.getName().equals("name")),
                 new TextGenerator().withMatcher(f -> f.getName().equals("subtext")),
                 new DrawableAvatarGenerator(this),
                 new StringDateGenerator(),
@@ -58,7 +61,22 @@ public class MainActivity extends AppCompatActivity {
     private void fillItems() {
         Object[] items;
         if (Math.random() > 0.5) {
-            items = new DefaultAvatarTextSubtextDateItem[10];
+            items = new Object[]{
+                    new DefaultHeaderItem("Header"),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultHeaderItem("Header"),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultHeaderItem("Header"),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultHeaderItem("Header"),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultHeaderItem("Header"),
+                    new DefaultAvatarTextSubtextDateItem(),
+                    new DefaultAvatarTextSubtextDateItem()};
         } else {
             items = new CreditCardItem[10];
         }

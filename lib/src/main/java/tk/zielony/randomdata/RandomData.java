@@ -90,7 +90,7 @@ public class RandomData {
                 }
             }
         }
-        if (f.getType().isPrimitive())
+        if (f.getType().isPrimitive() || f.getType().equals(String.class))
             return;
         try {
             Object o = f.getType().newInstance();
