@@ -18,7 +18,7 @@ public class DoubleAltitudeGenerator extends Generator<Double> {
     }
 
     @Override
-    public Double next(DataContext context) {
+    public Double next(DataContext context, String userInput) {
         return random.nextDouble();
     }
 }

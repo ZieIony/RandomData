@@ -31,8 +31,15 @@ public class RandomData {
     }
 
     private List<GeneratorWithPriority> generators = new ArrayList<>();
+    private String userInput = null;
 
     public void addGenerators(Generator[] generators) {
+        for (Generator g : generators)
+            this.generators.add(new GeneratorWithPriority(g, Priority.Normal));
+    }
+
+    public void addGenerators(Generator[] generators, String userInput) {
+        this.userInput = userInput;
         for (Generator g : generators)
             this.generators.add(new GeneratorWithPriority(g, Priority.Normal));
     }
@@ -42,11 +49,27 @@ public class RandomData {
             this.generators.add(new GeneratorWithPriority(g, priority));
     }
 
+    public void addGenerators(Generator[] generators, String userInput, Priority priority) {
+        this.userInput = userInput;
+        for (Generator g : generators)
+            this.generators.add(new GeneratorWithPriority(g, priority));
+    }
+
     public void addGenerator(Generator generator) {
         generators.add(new GeneratorWithPriority(generator, Priority.Normal));
     }
 
+    public void addGenerator(Generator generator, String userInput) {
+        this.userInput = userInput;
+        generators.add(new GeneratorWithPriority(generator, Priority.Normal));
+    }
+
     public void addGenerator(Generator generator, Priority priority) {
+        generators.add(new GeneratorWithPriority(generator, priority));
+    }
+
+    public void addGenerator(Generator generator, String userInput, Priority priority) {
+        this.userInput = userInput;
         generators.add(new GeneratorWithPriority(generator, priority));
     }
 
@@ -83,7 +106,7 @@ public class RandomData {
         for (GeneratorWithPriority g : generators) {
             if (g.generator.match(f)) {
                 try {
-                    f.set(target, g.generator.next(context));
+                    f.set(target, g.generator.next(context, userInput));
                     return;
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

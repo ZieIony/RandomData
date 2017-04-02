@@ -18,7 +18,7 @@ public class StringPhoneGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String next(DataContext context, String userInput) {
         return ""+(random.nextInt(900000000) + 1000000000);
     }
 }

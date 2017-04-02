@@ -58,7 +58,7 @@ public class IntegerHSVColorGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
+    public Integer next(DataContext context, String userInput) {
         if (grayscale) {
             float h = random.nextFloat() * (maxH - minH) + minH;
             float v = random.nextFloat() * (maxV - minV) + maxV;

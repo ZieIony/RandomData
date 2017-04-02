@@ -19,7 +19,7 @@ public class StringDateGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String next(DataContext context, String userInput) {
         return format.format(new Date(System.currentTimeMillis() - random.nextInt(WEEK)));
     }
 }

@@ -19,7 +19,7 @@ public class StringGenderGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String next(DataContext context, String userInput) {
         if (context.getGender() != null) {
             return context.getGender().name();
         } else {
