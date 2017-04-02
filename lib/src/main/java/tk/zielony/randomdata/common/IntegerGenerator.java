@@ -33,7 +33,7 @@ public class IntegerGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
+    public Integer next(DataContext context, String userInput) {
         return array != null ? array[random.nextInt(array.length)] : random.nextInt(max + 1 - min) + min;
     }
 }

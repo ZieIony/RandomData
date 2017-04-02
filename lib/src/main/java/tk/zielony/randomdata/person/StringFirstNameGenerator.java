@@ -41,7 +41,7 @@ public class StringFirstNameGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String next(DataContext context, String userInput) {
         Gender g = context.getGender();
         if (g == null)
             context.setGender(g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender);
@@ -78,7 +78,7 @@ public class StringFirstNameGenerator extends Generator<String> {
         return next(g);
     }
 
-    private String next(Gender gender) {
+    private String next(Gender gender, String userInput) {
         return gender == Gender.Female ? female[random.nextInt(female.length)] : male[random.nextInt(male.length)];
     }
 

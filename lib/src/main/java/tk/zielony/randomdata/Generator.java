@@ -18,7 +18,7 @@ public abstract class Generator<Type> {
         return matcher.matches(f);
     }
 
-    public abstract Type next(DataContext context);
+    public abstract Type next(DataContext context, String userInput);
 
     public void reset() {
     }

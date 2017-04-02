@@ -58,7 +58,7 @@ public class IntegerRGBColorGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
+    public Integer next(DataContext context, String userInput) {
         if (grayscale) {
             int g = random.nextInt(maxR + 1 - minR) + minR;
             return Color.argb(random.nextInt(maxA + 1 - minA) + minA, g, g, g);

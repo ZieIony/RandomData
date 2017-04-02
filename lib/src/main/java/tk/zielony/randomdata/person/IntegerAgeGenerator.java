@@ -45,7 +45,7 @@ public class IntegerAgeGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
+    public Integer next(DataContext context, String userInput) {
         return random.nextInt(max - min) + min;
     }
 }

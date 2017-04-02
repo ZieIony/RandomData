@@ -20,7 +20,7 @@ public class StringLastNameGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String next(DataContext context, String userInput) {
         return names[random.nextInt(names.length)];
     }
 }

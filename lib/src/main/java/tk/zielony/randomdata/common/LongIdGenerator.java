@@ -13,7 +13,7 @@ public class LongIdGenerator extends Generator<Long> {
     }
 
     @Override
-    public Long next(DataContext context) {
+    public Long next(DataContext context, String userInput) {
         return id++;
     }
 
