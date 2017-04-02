@@ -20,7 +20,7 @@ Add JitPack to your main build.gradle:
 Add RandomData to your project's dependencies:
     
     dependencies {
-        compile 'com.github.ZieIony:RandomData:926c64a3ca'
+        compile 'com.github.ZieIony:RandomData:0434057749'
     }
 
 ### Usage
