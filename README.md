@@ -17,10 +17,10 @@ Add JitPack to your main build.gradle:
         }
     }
     
-Add RandomData to your project's dependencies:
+Add RandomData to your project's dependencies. Select only modules you need (because of their size):
     
     dependencies {
-        compile 'com.github.ZieIony:RandomData:0434057749'
+        compile 'com.github.ZieIony.RandomData:person:4b76016d78'
     }
 
 ### Usage
@@ -46,7 +46,31 @@ Fill your objects with data. There's no need to initialize arrays:
 
     User[] items = new User[10];
     randomData.fill(items);
-    
+
+### Modules
+
+##### Common
+
+ - picture
+ - date
+ - id
+ - hash
+ - lorem ipsum
+
+##### Person
+
+ - avatar
+ - name
+ - email
+ - gender
+ - phone number
+ - age
+ 
+##### Finance
+
+ - amount
+ - card number
+ 
 ### FAQ
 
 ##### 1. Where did you get these nice recycler rows from?
