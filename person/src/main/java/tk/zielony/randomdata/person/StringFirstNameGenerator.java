@@ -42,9 +42,9 @@ public class StringFirstNameGenerator extends Generator<String> {
 
     @Override
     public String next(DataContext context) {
-        Gender g = context.getGender();
+        Gender g = context.get(PersonDataContext.GENDER);
         if (g == null)
-            context.setGender(g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender);
+            context.set(PersonDataContext.GENDER, g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender);
         String name;
         if (preventDuplicates) {
             if (g == Gender.Male && maleUsed.size() == male.length * (allowTwoNames ? male.length : 1))

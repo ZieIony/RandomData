@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/RandomData.iml" filepath="$PROJECT_DIR$/RandomData.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/carbon/carbon.iml" filepath="$PROJECT_DIR$/carbon/carbon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/finance/finance.iml" filepath="$PROJECT_DIR$/finance/finance.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/person/person.iml" filepath="$PROJECT_DIR$/person/person.iml" />
     </modules>
   </component>
 </project>

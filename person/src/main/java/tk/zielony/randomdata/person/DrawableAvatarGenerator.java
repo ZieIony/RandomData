@@ -10,7 +10,6 @@ import java.util.Set;
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
-import tk.zielony.randomdata.R;
 
 /**
  * Created by Marcin on 27.03.2017.
@@ -25,11 +24,11 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
     private Set<Integer> maleUsed = new HashSet<>();
 
     private int[] female = {
-            R.drawable.woman0, R.drawable.woman1, R.drawable.woman2, R.drawable.woman3, R.drawable.woman4, R.drawable.woman5, R.drawable.woman6, R.drawable.woman7, R.drawable.woman8, R.drawable.woman9
+            R.drawable.randomdata_woman0, R.drawable.randomdata_woman1, R.drawable.randomdata_woman2, R.drawable.randomdata_woman3, R.drawable.randomdata_woman4, R.drawable.randomdata_woman5, R.drawable.randomdata_woman6, R.drawable.randomdata_woman7, R.drawable.randomdata_woman8, R.drawable.randomdata_woman9
     };
 
     private int[] male = {
-            R.drawable.man0, R.drawable.man1, R.drawable.man2, R.drawable.man3, R.drawable.man4, R.drawable.man5, R.drawable.man6, R.drawable.man7, R.drawable.man8, R.drawable.man9
+            R.drawable.randomdata_man0, R.drawable.randomdata_man1, R.drawable.randomdata_man2, R.drawable.randomdata_man3, R.drawable.randomdata_man4, R.drawable.randomdata_man5, R.drawable.randomdata_man6, R.drawable.randomdata_man7, R.drawable.randomdata_man8, R.drawable.randomdata_man9
     };
 
     public DrawableAvatarGenerator(Context context) {
@@ -55,9 +54,9 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
     }
 
     private int next2(DataContext dataContext) {
-        Gender g = dataContext.getGender();
+        Gender g = dataContext.get(PersonDataContext.GENDER);
         if (g == null)
-            dataContext.setGender(g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender == Gender.Female ? Gender.Female : Gender.Male);
+            dataContext.set(PersonDataContext.GENDER, g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender == Gender.Female ? Gender.Female : Gender.Male);
         int resId;
         if (preventDuplicates) {
             if (g == Gender.Male && maleUsed.size() == male.length)

@@ -28,7 +28,12 @@ public class StringNameGenerator extends Generator<String> {
 
     @Override
     public String next(DataContext context) {
-        return firstNameGenerator.next(context) + " " + lastNameGenerator.next(context);
+        String name = context.get(DataContext.NAME);
+        if (name == null) {
+            name = firstNameGenerator.next(context) + " " + lastNameGenerator.next(context);
+            context.set(DataContext.NAME, name);
+        }
+        return name;
     }
 
     @Override
