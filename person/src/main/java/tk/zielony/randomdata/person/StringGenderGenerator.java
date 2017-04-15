@@ -20,11 +20,12 @@ public class StringGenderGenerator extends Generator<String> {
 
     @Override
     public String next(DataContext context) {
-        if (context.get(PersonDataContext.GENDER) != null) {
+        if (context != null && context.get(PersonDataContext.GENDER) != null) {
             return ((Gender) context.get(PersonDataContext.GENDER)).name();
         } else {
             Gender g = random.nextBoolean() ? Gender.Female : Gender.Male;
-            context.set(PersonDataContext.GENDER, g);
+            if (context != null)
+                context.set(PersonDataContext.GENDER, g);
             return g.name();
         }
     }

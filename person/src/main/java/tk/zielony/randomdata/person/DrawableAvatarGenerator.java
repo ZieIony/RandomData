@@ -54,8 +54,8 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
     }
 
     private int next2(DataContext dataContext) {
-        Gender g = dataContext.get(PersonDataContext.GENDER);
-        if (g == null)
+        Gender g = dataContext != null ? dataContext.get(PersonDataContext.GENDER) : null;
+        if (g == null && dataContext != null)
             dataContext.set(PersonDataContext.GENDER, g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender == Gender.Female ? Gender.Female : Gender.Male);
         int resId;
         if (preventDuplicates) {

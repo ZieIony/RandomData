@@ -42,8 +42,8 @@ public class StringFirstNameGenerator extends Generator<String> {
 
     @Override
     public String next(DataContext context) {
-        Gender g = context.get(PersonDataContext.GENDER);
-        if (g == null)
+        Gender g = context != null ? context.get(PersonDataContext.GENDER) : null;
+        if (g == null && context != null)
             context.set(PersonDataContext.GENDER, g = gender == Gender.Both ? random.nextBoolean() ? Gender.Female : Gender.Male : gender);
         String name;
         if (preventDuplicates) {

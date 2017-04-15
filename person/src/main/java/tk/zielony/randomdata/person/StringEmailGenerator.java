@@ -26,10 +26,11 @@ public class StringEmailGenerator extends Generator<String> {
 
     @Override
     public String next(DataContext context) {
-        String name = context.get(DataContext.NAME);
+        String name = context != null ? context.get(DataContext.NAME) : null;
         if (name == null) {
             name = nameGenerator.next(context);
-            context.set(DataContext.NAME, name);
+            if (context != null)
+                context.set(DataContext.NAME, name);
         }
         return name.toLowerCase().replace(" ", ".") + "@" + domains[random.nextInt(domains.length)];
     }
