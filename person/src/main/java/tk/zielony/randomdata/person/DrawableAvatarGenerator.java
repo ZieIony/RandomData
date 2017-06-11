@@ -3,6 +3,7 @@ package tk.zielony.randomdata.person;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -45,7 +46,12 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(Drawable.class) && f.getName().equals("avatar");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return f.getType().equals(Drawable.class) && f.getName().equals("avatar");
+            }
+        };
     }
 
     @Override

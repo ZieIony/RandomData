@@ -3,6 +3,7 @@ package tk.zielony.randomdata.common;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -54,7 +55,12 @@ public class IntegerRGBColorGenerator extends Generator<Integer> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("color");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("color");
+            }
+        };
     }
 
     @Override

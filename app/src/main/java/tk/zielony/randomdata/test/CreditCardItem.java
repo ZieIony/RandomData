@@ -2,11 +2,9 @@ package tk.zielony.randomdata.test;
 
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by Marcin on 2017-03-31.
- */
+import java.io.Serializable;
 
-public class CreditCardItem {
+public class CreditCardItem implements Serializable {
     public String name;
     public String number;
     public String amount;

@@ -1,5 +1,6 @@
 package tk.zielony.randomdata.place;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -16,7 +17,12 @@ public class StringCityGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().contains("city");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return f.getType().equals(String.class) && f.getName().contains("city");
+            }
+        };
     }
 
     @Override

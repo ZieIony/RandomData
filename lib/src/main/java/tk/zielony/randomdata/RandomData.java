@@ -51,10 +51,13 @@ public class RandomData {
     }
 
     public void fillAsync(@NonNull Object target, @Nullable OnFillCompletedListener listener) {
-        executor.execute(() -> {
-            fill(target);
-            if (listener != null)
-                listener.onFillCompleted();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                fill(target);
+                if (listener != null)
+                    listener.onFillCompleted();
+            }
         });
     }
 

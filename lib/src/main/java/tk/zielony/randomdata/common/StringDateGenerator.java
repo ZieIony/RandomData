@@ -1,5 +1,6 @@
 package tk.zielony.randomdata.common;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -15,7 +16,12 @@ public class StringDateGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().equals("date");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return f.getType().equals(String.class) && f.getName().equals("date");
+            }
+        };
     }
 
     @Override

@@ -1,5 +1,6 @@
 package tk.zielony.randomdata.finance;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -34,7 +35,12 @@ public class StringCardNumberGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().contains("number");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return f.getType().equals(String.class) && f.getName().contains("number");
+            }
+        };
     }
 
     @Override

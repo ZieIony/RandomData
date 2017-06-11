@@ -1,5 +1,6 @@
 package tk.zielony.randomdata.common;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -12,7 +13,12 @@ public class LongDateGenerator extends Generator<Long> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("date");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("date");
+            }
+        };
     }
 
     @Override

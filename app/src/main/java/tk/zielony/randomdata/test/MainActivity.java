@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 
 import java.util.Arrays;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RowListAdapter<>(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow.FACTORY);
         adapter.addFactory(DefaultHeaderItem.class, HeaderRow.FACTORY);
         adapter.addFactory(CreditCardItem.class, CreditCardRow.FACTORY);

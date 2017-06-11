@@ -1,5 +1,6 @@
 package tk.zielony.randomdata.finance;
 
+import java.lang.reflect.Field;
 import java.util.Currency;
 import java.util.Locale;
 
@@ -21,7 +22,12 @@ public class StringAmountGenerator extends AmountGenerator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().contains("amount");
+        return new Matcher() {
+            @Override
+            public boolean matches(Field f) {
+                return f.getType().equals(String.class) && f.getName().contains("amount");
+            }
+        };
     }
 
     @Override
