@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.person;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -42,12 +41,7 @@ public class IntegerAgeGenerator extends Generator<Integer> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("age");
-            }
-        };
+        return f -> (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("age");
     }
 
     @Override

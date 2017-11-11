@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.person;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -22,12 +21,7 @@ public class StringEmailGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(String.class) && StringEmailGenerator.this.getClass().getName().contains("email");
-            }
-        };
+        return f -> f.getType().equals(String.class) && StringEmailGenerator.this.getClass().getName().contains("email");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.person;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -17,12 +16,7 @@ public class StringLastNameGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(String.class) && f.getName().contains("lastName");
-            }
-        };
+        return f -> f.getType().equals(String.class) && f.getName().contains("lastName");
     }
 
     @Override

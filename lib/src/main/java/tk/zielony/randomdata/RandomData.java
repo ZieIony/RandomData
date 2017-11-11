@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,14 +51,36 @@ public class RandomData {
         generators.add(new GeneratorWithPriority(generator, priority));
     }
 
+    public <Type> Type generate(Class<Type> klass) {
+        try {
+            Type instance = klass.newInstance();
+            fill(instance);
+            return instance;
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <Type> Type[] generateArray(Class<Type> klass, int size) {
+        Type[] array = (Type[]) Array.newInstance(klass, size);
+        fill(array);
+        return array;
+    }
+
+    public <Type> List<Type> generateList(Class<Type> klass, int size) {
+        List<Type> list = new ArrayList<>();
+        for (int i = 0; i < size; i++)
+            list.add(generate(klass));
+        return list;
+    }
+
     public void fillAsync(@NonNull Object target, @Nullable OnFillCompletedListener listener) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                fill(target);
-                if (listener != null)
-                    listener.onFillCompleted();
-            }
+        executor.execute(() -> {
+            fill(target);
+            if (listener != null)
+                listener.onFillCompleted();
         });
     }
 

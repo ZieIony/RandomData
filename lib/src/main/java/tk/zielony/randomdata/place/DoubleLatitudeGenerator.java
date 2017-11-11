@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.place;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -15,12 +14,7 @@ public class DoubleLatitudeGenerator extends Generator<Double> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return (f.getType().equals(double.class) || f.getType().equals(Double.class)) && f.getName().contains("lat");
-            }
-        };
+        return f -> (f.getType().equals(double.class) || f.getType().equals(Double.class)) && f.getName().contains("lat");
     }
 
     @Override

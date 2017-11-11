@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.common;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
@@ -29,13 +28,8 @@ public class FloatGenerator extends Generator<Float> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(float.class) || f.getType().equals(Float.class) ||
-                        f.getType().equals(double.class) || f.getType().equals(Double.class);
-            }
-        };
+        return f -> f.getType().equals(float.class) || f.getType().equals(Float.class) ||
+                f.getType().equals(double.class) || f.getType().equals(Double.class);
     }
 
     @Override

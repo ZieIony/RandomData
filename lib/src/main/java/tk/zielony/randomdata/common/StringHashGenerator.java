@@ -36,7 +36,7 @@ public class StringHashGenerator extends Generator<String> {
     public String next(DataContext context) {
         char[] hash = new char[length];
         for (int i = 0; i < hash.length; i++)
-            hash[i] = (char) (random.nextBoolean() ? random.nextInt('0' - '1') + '1' : random.nextInt('z' - 'a') + 'a');
+            hash[i] = (char) (random.nextBoolean() ? random.nextInt('9' - '0') + '0' : random.nextInt('z' - 'a') + 'a');
         return new String(hash);
     }
 }

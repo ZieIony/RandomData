@@ -1,7 +1,5 @@
 package tk.zielony.randomdata.common;
 
-import java.lang.reflect.Field;
-
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
@@ -11,12 +9,7 @@ public class LongIdGenerator extends Generator<Long> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("id");
-            }
-        };
+        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("id");
     }
 
     @Override

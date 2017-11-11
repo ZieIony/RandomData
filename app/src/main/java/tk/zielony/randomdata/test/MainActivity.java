@@ -6,13 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
-import java.util.Arrays;
-
 import carbon.component.AvatarTextSubtext2DateRow;
 import carbon.component.DefaultAvatarTextSubtextDateItem;
 import carbon.component.DefaultHeaderItem;
 import carbon.component.HeaderRow;
-import carbon.recycler.RowListAdapter;
+import carbon.recycler.RowArrayAdapter;
 import carbon.widget.RecyclerView;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.RandomData;
@@ -26,7 +24,7 @@ import tk.zielony.randomdata.person.Gender;
 import tk.zielony.randomdata.person.StringNameGenerator;
 
 public class MainActivity extends AppCompatActivity {
-    RowListAdapter adapter;
+    RowArrayAdapter adapter;
     private RandomData randomData;
     private SwipeRefreshLayout swipeRefresh;
 
@@ -35,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
+        RecyclerView recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RowListAdapter<>(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow.FACTORY);
-        adapter.addFactory(DefaultHeaderItem.class, HeaderRow.FACTORY);
-        adapter.addFactory(CreditCardItem.class, CreditCardRow.FACTORY);
+        adapter = new RowArrayAdapter(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow::new);
+        adapter.addFactory(DefaultHeaderItem.class, HeaderRow::new);
+        adapter.addFactory(CreditCardItem.class, CreditCardRow::new);
         recycler.setAdapter(adapter);
 
-        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+        swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(this::fillItems);
 
         randomData = new RandomData();
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             items = new CreditCardItem[10];
         }
         randomData.fillAsync(items, () -> runOnUiThread(() -> {
-            adapter.setItems(Arrays.asList(items));
+            adapter.setItems(items);
             swipeRefresh.setRefreshing(false);
         }));
     }

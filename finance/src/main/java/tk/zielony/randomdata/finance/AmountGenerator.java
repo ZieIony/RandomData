@@ -1,6 +1,5 @@
 package tk.zielony.randomdata.finance;
 
-import java.lang.reflect.Field;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Random;
@@ -30,12 +29,7 @@ public abstract class AmountGenerator<Type> extends Generator<Type> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(String.class) && f.getName().contains("amount");
-            }
-        };
+        return f -> f.getType().equals(String.class) && f.getName().contains("amount");
     }
 
     public float next2(DataContext context) {

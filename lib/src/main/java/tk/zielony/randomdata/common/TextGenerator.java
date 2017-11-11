@@ -1,7 +1,5 @@
 package tk.zielony.randomdata.common;
 
-import java.lang.reflect.Field;
-
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
@@ -27,12 +25,7 @@ public class TextGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(String.class) && (f.getName().contains("description") || f.getName().contains("text"));
-            }
-        };
+        return f -> f.getType().equals(String.class) && (f.getName().contains("description") || f.getName().contains("text"));
     }
 
     @Override
@@ -43,7 +36,8 @@ public class TextGenerator extends Generator<String> {
             if (i % loremIpsum.length == loremIpsum.length - 1 && sentences > loremIpsum.length)
                 builder.append("\n\n");
         }
-        sequence += sentences;
+        if (useSequence)
+            sequence += sentences;
         return builder.toString();
     }
 

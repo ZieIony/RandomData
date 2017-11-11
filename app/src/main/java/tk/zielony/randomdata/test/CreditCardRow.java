@@ -5,7 +5,6 @@ import android.support.v7.graphics.Palette;
 import android.view.ViewGroup;
 
 import carbon.component.DataBindingComponent;
-import carbon.recycler.RowFactory;
 import carbon.widget.LinearLayout;
 import tk.zielony.randomdata.test.databinding.CreditcardBinding;
 
@@ -14,8 +13,6 @@ import tk.zielony.randomdata.test.databinding.CreditcardBinding;
  */
 
 class CreditCardRow extends DataBindingComponent<CreditCardItem> {
-    public static final RowFactory FACTORY = CreditCardRow::new;
-
     public CreditCardRow(ViewGroup parent){
         super(parent,R.layout.creditcard);
     }

@@ -1,7 +1,5 @@
 package tk.zielony.randomdata.finance;
 
-import java.lang.reflect.Field;
-
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Matcher;
 
@@ -20,12 +18,7 @@ public class FloatAmountGenerator extends AmountGenerator<Float> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return (f.getType().equals(float.class) || f.getType().equals(Float.class)) && f.getName().contains("amount");
-            }
-        };
+        return f -> (f.getType().equals(float.class) || f.getType().equals(Float.class)) && f.getName().contains("amount");
     }
 
     @Override
