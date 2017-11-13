@@ -57,6 +57,7 @@ public class RandomData {
             fill(instance);
             return instance;
         } catch (InstantiationException e) {
+            Log.e("RandomData", "No 0-argument constructor or an exception during object construction of type " + klass.getName());
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -119,11 +120,15 @@ public class RandomData {
         if (f.getType().isPrimitive() || f.getType().equals(String.class))
             return;
         try {
-            Object o = f.getType().newInstance();
-            f.set(target, o);
-            fill(o);
-        } catch (InstantiationException e) {
-            Log.e("RandomData", "No 0-argument constructor or an exception during object construction of type " + f.getType().getName());
+            f.set(target, generate(f.getType()));
+            return;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        try {
+            Object object = f.get(target);
+            if (object != null)
+                fill(object, context);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -134,13 +139,15 @@ public class RandomData {
             if (target[i] == null) {
                 try {
                     target[i] = target.getClass().getComponentType().newInstance();
+                    fill(target[i], context);
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
+            } else {
+                fill(target[i], context);
             }
-            fill(target[i], context);
         }
     }
 

@@ -15,7 +15,7 @@ public class BooleanGenerator extends Generator<Boolean> {
     }
 
     @Override
-    public Boolean next(DataContext context) {
+    public Boolean nextInternal(DataContext context) {
         return random.nextBoolean();
     }
 }

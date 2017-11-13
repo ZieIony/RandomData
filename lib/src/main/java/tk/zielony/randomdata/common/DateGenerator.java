@@ -29,7 +29,7 @@ public class DateGenerator extends Generator<Date> {
     }
 
     @Override
-    public Date next(DataContext context) {
+    public Date nextInternal(DataContext context) {
         return new Date(startDate + random.nextInt((int) (endDate - startDate)));
     }
 }

@@ -29,7 +29,7 @@ public class TextGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String nextInternal(DataContext context) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sentences; i++) {
             builder.append(loremIpsum[(i + sequence) % loremIpsum.length]).append(". ");

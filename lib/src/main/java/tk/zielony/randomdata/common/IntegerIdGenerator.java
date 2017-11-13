@@ -6,6 +6,16 @@ import tk.zielony.randomdata.Matcher;
 
 public class IntegerIdGenerator extends Generator<Integer> {
     private int id = 0;
+    private int startId;
+
+    public IntegerIdGenerator() {
+        startId = 0;
+    }
+
+    public IntegerIdGenerator(int startId) {
+        this.startId = startId;
+        id = startId;
+    }
 
     @Override
     protected Matcher getDefaultMatcher() {
@@ -13,12 +23,12 @@ public class IntegerIdGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer next(DataContext context) {
+    public Integer nextInternal(DataContext context) {
         return id++;
     }
 
     @Override
     public void reset() {
-        id = 0;
+        id = startId;
     }
 }

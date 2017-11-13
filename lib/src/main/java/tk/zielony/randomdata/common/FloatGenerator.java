@@ -33,7 +33,7 @@ public class FloatGenerator extends Generator<Float> {
     }
 
     @Override
-    public Float next(DataContext context) {
+    public Float nextInternal(DataContext context) {
         return array != null ? array[random.nextInt(array.length)] : random.nextFloat() * (max - min) + min;
     }
 }

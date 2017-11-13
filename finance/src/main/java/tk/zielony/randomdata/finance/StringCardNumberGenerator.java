@@ -38,7 +38,7 @@ public class StringCardNumberGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String nextInternal(DataContext context) {
         BIN bin = bins[random.nextInt(bins.length)];
         StringBuilder builder = new StringBuilder();
         builder.append(bin.number);

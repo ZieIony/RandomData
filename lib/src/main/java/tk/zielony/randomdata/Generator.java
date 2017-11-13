@@ -6,11 +6,17 @@ import java.lang.reflect.Field;
 
 public abstract class Generator<Type> {
     private Matcher matcher;
+    private Transformer<Type> transformer;
 
     protected abstract Matcher getDefaultMatcher();
 
     public Generator<Type> withMatcher(Matcher matcher) {
         this.matcher = matcher;
+        return this;
+    }
+
+    public Generator<Type> withTransformer(Transformer<Type> transformer) {
+        this.transformer = transformer;
         return this;
     }
 
@@ -21,10 +27,20 @@ public abstract class Generator<Type> {
     }
 
     public Type next() {
-        return next(null);
+        Type nextValue = nextInternal(null);
+        if (transformer != null)
+            return transformer.transform(nextValue);
+        return nextValue;
     }
 
-    public abstract Type next(@Nullable DataContext context);
+    public Type next(@Nullable DataContext context) {
+        Type nextValue = nextInternal(context);
+        if (transformer != null)
+            return transformer.transform(nextValue);
+        return nextValue;
+    }
+
+    public abstract Type nextInternal(@Nullable DataContext context);
 
     public void reset() {
     }

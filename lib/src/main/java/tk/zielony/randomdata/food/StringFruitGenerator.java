@@ -43,7 +43,7 @@ public class StringFruitGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String nextInternal(DataContext context) {
         String name;
         if (preventDuplicates) {
             if (used.size() == fruits.length)

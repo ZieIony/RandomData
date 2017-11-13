@@ -16,7 +16,7 @@ public class LongDateGenerator extends Generator<Long> {
     }
 
     @Override
-    public Long next(DataContext context) {
+    public Long nextInternal(DataContext context) {
         return System.currentTimeMillis() - random.nextInt(WEEK);
     }
 }

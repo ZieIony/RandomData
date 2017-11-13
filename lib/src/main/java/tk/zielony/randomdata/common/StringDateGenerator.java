@@ -33,7 +33,7 @@ public class StringDateGenerator extends Generator<String> {
     }
 
     @Override
-    public String next(DataContext context) {
+    public String nextInternal(DataContext context) {
         return format.format(startDate + random.nextInt((int) (endDate - startDate)));
     }
 }
