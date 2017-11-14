@@ -1,9 +1,5 @@
 package tk.zielony.randomdata;
 
-/**
- * Created by Marcin on 2017-03-31.
- */
-
 public class Country {
     String[] countries = {
             "Afghanistan", "93", "AF", "AFG",

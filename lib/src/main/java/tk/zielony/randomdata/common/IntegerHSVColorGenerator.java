@@ -54,7 +54,7 @@ public class IntegerHSVColorGenerator extends Generator<Integer> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("color");
+        return f -> f.getName().contains("color");
     }
 
     @Override

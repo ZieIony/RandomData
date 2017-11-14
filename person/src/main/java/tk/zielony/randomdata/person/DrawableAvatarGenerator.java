@@ -11,9 +11,6 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class DrawableAvatarGenerator extends Generator<Drawable> {
     private Context context;
     private Random random = new Random();
@@ -45,7 +42,7 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(Drawable.class) && f.getName().equals("avatar");
+        return f -> f.getName().equals("avatar");
     }
 
     @Override

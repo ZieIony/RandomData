@@ -1,15 +1,11 @@
 package tk.zielony.randomdata.common;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class StringHashGenerator extends Generator<String> {
     private Random random = new Random();
     private int length;
@@ -24,12 +20,7 @@ public class StringHashGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return new Matcher() {
-            @Override
-            public boolean matches(Field f) {
-                return f.getType().equals(String.class) && f.getName().contains("hash");
-            }
-        };
+        return f -> f.getName().contains("hash");
     }
 
     @Override

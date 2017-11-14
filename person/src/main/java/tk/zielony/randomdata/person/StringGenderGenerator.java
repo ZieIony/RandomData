@@ -6,16 +6,12 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 30.03.2017.
- */
-
 public class StringGenderGenerator extends Generator<String> {
     private Random random = new Random();
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && (f.getName().equals("gender") || f.getName().equals("sex"));
+        return f -> f.getName().equals("gender") || f.getName().equals("sex");
     }
 
     @Override

@@ -6,9 +6,6 @@ import java.util.Locale;
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public class StringAmountGenerator extends AmountGenerator<String> {
 
     public StringAmountGenerator() {
@@ -21,7 +18,7 @@ public class StringAmountGenerator extends AmountGenerator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().contains("amount");
+        return f -> f.getName().contains("amount");
     }
 
     @Override

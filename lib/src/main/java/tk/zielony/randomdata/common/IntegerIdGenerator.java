@@ -19,7 +19,7 @@ public class IntegerIdGenerator extends Generator<Integer> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(int.class) || f.getType().equals(Integer.class)) && f.getName().contains("id");
+        return f -> f.getName().contains("id");
     }
 
     @Override

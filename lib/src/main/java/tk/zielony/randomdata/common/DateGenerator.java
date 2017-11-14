@@ -25,7 +25,7 @@ public class DateGenerator extends Generator<Date> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().equals("date");
+        return f -> f.getName().equals("date");
     }
 
     @Override

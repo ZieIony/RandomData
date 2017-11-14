@@ -4,7 +4,6 @@ import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
-import tk.zielony.randomdata.Matcher;
 
 public class FloatGenerator extends Generator<Float> {
     private Random random = new Random();
@@ -24,12 +23,6 @@ public class FloatGenerator extends Generator<Float> {
 
     public FloatGenerator(float[] array) {
         this.array = array;
-    }
-
-    @Override
-    protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(float.class) || f.getType().equals(Float.class) ||
-                f.getType().equals(double.class) || f.getType().equals(Double.class);
     }
 
     @Override

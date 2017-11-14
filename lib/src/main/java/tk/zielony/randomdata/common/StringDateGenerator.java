@@ -29,7 +29,7 @@ public class StringDateGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().equals("date");
+        return f -> f.getName().equals("date");
     }
 
     @Override

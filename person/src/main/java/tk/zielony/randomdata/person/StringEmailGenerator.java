@@ -6,10 +6,6 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 30.03.2017.
- */
-
 public class StringEmailGenerator extends Generator<String> {
     private StringNameGenerator nameGenerator;
     private Random random = new Random();
@@ -21,7 +17,7 @@ public class StringEmailGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && StringEmailGenerator.this.getClass().getName().contains("email");
+        return f -> getClass().getName().contains("email");
     }
 
     @Override

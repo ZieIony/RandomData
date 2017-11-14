@@ -8,9 +8,6 @@ import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.Matcher;
 
-/**
- * Created by Marcin on 27.03.2017.
- */
 public abstract class AmountGenerator<Type> extends Generator<Type> {
     private Random random = new Random();
     private float max;
@@ -29,7 +26,7 @@ public abstract class AmountGenerator<Type> extends Generator<Type> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(String.class) && f.getName().contains("amount");
+        return f -> f.getName().contains("amount");
     }
 
     public float next2(DataContext context) {

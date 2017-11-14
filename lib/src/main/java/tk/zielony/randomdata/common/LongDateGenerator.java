@@ -12,7 +12,7 @@ public class LongDateGenerator extends Generator<Long> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("date");
+        return f -> f.getName().equals("date");
     }
 
     @Override

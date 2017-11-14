@@ -8,10 +8,6 @@ import carbon.component.DataBindingComponent;
 import carbon.widget.LinearLayout;
 import tk.zielony.randomdata.test.databinding.CreditcardBinding;
 
-/**
- * Created by Marcin on 2017-03-31.
- */
-
 class CreditCardRow extends DataBindingComponent<CreditCardItem> {
     public CreditCardRow(ViewGroup parent){
         super(parent,R.layout.creditcard);

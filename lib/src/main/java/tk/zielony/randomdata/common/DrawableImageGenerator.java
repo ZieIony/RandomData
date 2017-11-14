@@ -35,7 +35,7 @@ public class DrawableImageGenerator extends Generator<Drawable> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getType().equals(Drawable.class) && (f.getName().equals("image") || f.getName().equals("picture"));
+        return f -> f.getName().equals("image") || f.getName().equals("picture");
     }
 
     @Override

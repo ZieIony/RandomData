@@ -19,7 +19,7 @@ public class LongIdGenerator extends Generator<Long> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> (f.getType().equals(long.class) || f.getType().equals(Long.class)) && f.getName().equals("id");
+        return f -> f.getName().equals("id");
     }
 
     @Override
