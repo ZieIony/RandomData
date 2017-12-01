@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/finance" />
             <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/person" />
+            <option value="$PROJECT_DIR$/util" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

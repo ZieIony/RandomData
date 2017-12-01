@@ -1,1 +1,1 @@
-include ':app', ':lib', ':carbon', ':person', ':finance'
+include ':app', ':lib', ':carbon', ':person', ':finance', ':util'
