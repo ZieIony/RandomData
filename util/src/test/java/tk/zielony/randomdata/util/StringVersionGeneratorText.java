@@ -8,11 +8,11 @@ import static org.junit.Assert.assertEquals;
  * Created by kirinpatel on 12/1/17.
  */
 
-public class VersionNumberGeneratorText {
+public class StringVersionGeneratorText {
 
     @Test
     public void generationIsCorrect() throws Exception {
-        VersionNumberGenerator versionNumberGenerator = new VersionNumberGenerator();
+        StringVersionGenerator versionNumberGenerator = new StringVersionGenerator();
         int version = versionNumberGenerator.nextVersionNumber(null);
         int build = versionNumberGenerator.nextBuildNumber(null);
         assertEquals(true,

@@ -11,18 +11,18 @@ import tk.zielony.randomdata.Generator;
  * Created by kirinpatel on 12/1/17.
  */
 
-public class VersionNumberGenerator extends Generator<String> {
+public class StringVersionGenerator extends Generator<String> {
     private Random random = new Random();
     private int minVersion, maxVersion, minBuild, maxBuild;
 
-    VersionNumberGenerator() {
+    StringVersionGenerator() {
         minVersion = 0;
         maxVersion = 1;
         minBuild = 0;
         maxBuild = 10;
     }
 
-    public VersionNumberGenerator(int minVersion, int maxVersion, int minBuild, int maxBuild) {
+    public StringVersionGenerator(int minVersion, int maxVersion, int minBuild, int maxBuild) {
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
         this.minBuild = minBuild;
