@@ -7,43 +7,36 @@ import java.util.Random;
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
 
-/**
- * Created by kirinpatel on 12/1/17.
- */
-
 public class StringIPAddressGenerator extends Generator<String> {
+
+    public enum classRange {
+        A, B, C
+    }
+
     private Random random = new Random();
-    private int classRange;
+    private classRange range = classRange.A;
 
-    StringIPAddressGenerator() {
-        classRange = 0;
+    public StringIPAddressGenerator() {
+
     }
 
-    public StringIPAddressGenerator(int classRange) {
-        this.classRange = classRange;
+    public StringIPAddressGenerator(classRange range) {
+        this.range = range;
     }
 
-    public int getClassRange() {
-        return classRange;
+    public classRange getClassRange() {
+        return range;
     }
 
-    public void setClassRange(int classRange) {
-        if (classRange >= 0 && classRange < 3) {
-            this.classRange = classRange;
-        } else if (classRange < 0) {
-            this.classRange = 0;
-        } else if (classRange > 2) {
-            this.classRange = 2;
-        }
+    public void setClassRange(classRange range) {
+        this.range = range;
     }
 
-    /* Values for initial section obtained from
-       https://www.neowin.net/forum/topic/127123-lowest-and-highest-ip-address/?do=findComment&comment=1525345 */
     private int generateInitialSection() {
-        switch(classRange) {
-            case 1:
+        switch(range) {
+            case A:
                 return random.nextInt(63) + 128;
-            case 2:
+            case B:
                 return random.nextInt(31) + 192;
             default:
                 return random.nextInt(126) + 1;
@@ -56,9 +49,10 @@ public class StringIPAddressGenerator extends Generator<String> {
 
     @Override
     public String nextInternal(@Nullable DataContext context) {
-        return generateInitialSection()
-                + "." + generateSubSection()
-                + "." + generateSubSection()
-                + "." + generateSubSection();
+        return new StringBuilder()
+                .append(generateInitialSection())
+                .append(".").append(generateSubSection())
+                .append(".").append(generateSubSection())
+                .append(".").append(generateSubSection()).toString();
     }
 }
