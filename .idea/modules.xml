@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/person/person.iml" filepath="$PROJECT_DIR$/person/person.iml" />
       <module fileurl="file://$PROJECT_DIR$/util/util.iml" filepath="$PROJECT_DIR$/util/util.iml" />
+      <module fileurl="file://D:\projekty\android studio workspace\RandomData\util\util.iml" filepath="D:\projekty\android studio workspace\RandomData\util\util.iml" />
     </modules>
   </component>
 </project>

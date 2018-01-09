@@ -10,16 +10,24 @@ import tk.zielony.randomdata.Generator;
 public class StringIPAddressGenerator extends Generator<String> {
 
     public enum ClassRange {
-        A(1, 126), B(128, 191), C(192, 223); // check the values, I'm not sure if these are okay
+        A(1, 126), B(128, 191), C(192, 223);
 
-        int min,max;
+        private int min, max;
 
-        ClassRange(int min, int max){
+        ClassRange(int min, int max) {
             this.min = min;
             this.max = max;
         }
 
-        public int getValue(Random random){
+        public int getMin() {
+            return min;
+        }
+
+        public int getMax() {
+            return max;
+        }
+
+        public int getValue(Random random) {
             return random.nextInt(max - min) + min;
         }
     }
@@ -28,7 +36,6 @@ public class StringIPAddressGenerator extends Generator<String> {
     private ClassRange range = ClassRange.A;
 
     public StringIPAddressGenerator() {
-
     }
 
     public StringIPAddressGenerator(ClassRange range) {
@@ -53,10 +60,9 @@ public class StringIPAddressGenerator extends Generator<String> {
 
     @Override
     public String nextInternal(@Nullable DataContext context) {
-        return new StringBuilder()
-                .append(generateInitialSection())
-                .append(".").append(generateSubSection())
-                .append(".").append(generateSubSection())
-                .append(".").append(generateSubSection()).toString();
+        return String.valueOf(generateInitialSection()) +
+                "." + generateSubSection() +
+                "." + generateSubSection() +
+                "." + generateSubSection();
     }
 }

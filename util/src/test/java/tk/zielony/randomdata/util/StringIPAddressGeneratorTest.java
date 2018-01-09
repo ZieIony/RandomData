@@ -13,7 +13,7 @@ public class StringIPAddressGeneratorTest {
             ipAddressGenerator.setClassRange(range);
             String ipAddress = ipAddressGenerator.next();
             int initialSection = Integer.parseInt(ipAddress.substring(0, ipAddress.indexOf('.')));
-            assertEquals(true, range.max >= initialSection && initialSection >= range.min);
+            assertEquals(true, range.getMax() >= initialSection && initialSection >= range.getMin());
         }
     }
 }
