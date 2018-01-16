@@ -6,11 +6,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
 import carbon.component.AvatarTextSubtext2DateRow;
 import carbon.component.DefaultAvatarTextSubtextDateItem;
 import carbon.component.DefaultHeaderItem;
 import carbon.component.HeaderRow;
-import carbon.recycler.RowArrayAdapter;
+import carbon.recycler.RowListAdapter;
 import carbon.widget.RecyclerView;
 import tk.zielony.randomdata.Generator;
 import tk.zielony.randomdata.RandomData;
@@ -24,7 +28,7 @@ import tk.zielony.randomdata.person.Gender;
 import tk.zielony.randomdata.person.StringNameGenerator;
 
 public class MainActivity extends AppCompatActivity {
-    RowArrayAdapter adapter;
+    RowListAdapter adapter;
     private RandomData randomData;
     private SwipeRefreshLayout swipeRefresh;
 
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RowArrayAdapter(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow::new);
+        adapter = new RowListAdapter(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow::new);
         adapter.addFactory(DefaultHeaderItem.class, HeaderRow::new);
         adapter.addFactory(CreditCardItem.class, CreditCardRow::new);
         recycler.setAdapter(adapter);
@@ -59,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillItems() {
-        Object[] items;
+        List<Serializable>  items;
         if (Math.random() > 0.5) {
-            items = new Object[]{
+            items = Arrays.asList(
                     new DefaultHeaderItem("Header"),
                     new DefaultAvatarTextSubtextDateItem(),
                     new DefaultAvatarTextSubtextDateItem(),
@@ -76,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
                     new DefaultAvatarTextSubtextDateItem(),
                     new DefaultHeaderItem("Header"),
                     new DefaultAvatarTextSubtextDateItem(),
-                    new DefaultAvatarTextSubtextDateItem()};
+                    new DefaultAvatarTextSubtextDateItem());
         } else {
-            items = new CreditCardItem[10];
+            items = Arrays.asList(new CreditCardItem[10]);
         }
         randomData.fillAsync(items, () -> runOnUiThread(() -> {
             adapter.setItems(items);

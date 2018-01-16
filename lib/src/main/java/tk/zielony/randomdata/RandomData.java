@@ -118,7 +118,7 @@ public class RandomData {
         context.save();
         if (target.getClass().isArray()) {
             fillArray((Object[]) target, context);
-        } else if (target.getClass().isAssignableFrom(List.class)) {
+        } else if (List.class.isAssignableFrom(target.getClass())) {
             fillList((List) target, context);
         } else if (!(target instanceof Iterable)) {
             fillObject(target, context);
