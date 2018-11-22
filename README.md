@@ -20,7 +20,7 @@ Add JitPack to your main build.gradle:
 Add RandomData to your project's dependencies. Select only modules you need (because of their size):
     
     dependencies {
-        compile 'com.github.ZieIony.RandomData:person:4b76016d78'
+        compile 'com.github.ZieIony.RandomData:person:4e90951628'
     }
 
 ### Usage
@@ -30,6 +30,11 @@ Prepare a data class:
     public class User{
         Drawable avatar;
         String name, subtext, date;
+        
+        @Ignore
+        Parcelable parcelable;  // don't fill this field
+        
+        final static int TYPE_ID = 5;   // ignored automatically
     }
 
 Setup RandomData with generators you need:
