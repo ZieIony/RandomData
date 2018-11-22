@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,6 +131,10 @@ public class RandomData {
         Class c = target.getClass();
         for (Field f : c.getDeclaredFields()) {
             f.setAccessible(true);
+            if ((f.getModifiers() & Modifier.FINAL) != 0)
+                continue;
+            if ((f.getModifiers() & Modifier.STATIC) != 0)
+                continue;
             if (f.getAnnotation(Ignore.class) == null)
                 fillValue(target, f, context);
         }
