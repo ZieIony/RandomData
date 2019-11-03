@@ -1,7 +1,7 @@
 package tk.zielony.randomdata.test;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.graphics.Palette;
+import androidx.palette.graphics.Palette;
 import android.view.ViewGroup;
 
 import carbon.component.DataBindingComponent;

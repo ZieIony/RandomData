@@ -1,7 +1,7 @@
 package tk.zielony.randomdata.common;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Random;
 

@@ -1,10 +1,10 @@
 package tk.zielony.randomdata.test;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -85,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
             items = Arrays.asList(new CreditCardItem[10]);
         }
         randomData.fillAsync(items, () -> runOnUiThread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             adapter.setItems(items);
             swipeRefresh.setRefreshing(false);
         }));
