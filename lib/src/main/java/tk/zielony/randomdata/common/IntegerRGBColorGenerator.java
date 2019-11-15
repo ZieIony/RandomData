@@ -34,7 +34,7 @@ public class IntegerRGBColorGenerator extends Generator<Integer> {
      * @param min
      * @param max
      */
-    public IntegerRGBColorGenerator(@NonNull int min[], @NonNull int max[]) {
+    public IntegerRGBColorGenerator(@NonNull int[] min, @NonNull int[] max) {
         if (min.length != max.length)
             throw new IllegalArgumentException("min.length != max.length");
         if (min.length == 0 || min.length > 4)
@@ -58,7 +58,7 @@ public class IntegerRGBColorGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer nextInternal(DataContext context) {
+    public Integer next(DataContext context) {
         if (grayscale) {
             int g = random.nextInt(maxR + 1 - minR) + minR;
             return Color.argb(random.nextInt(maxA + 1 - minA) + minA, g, g, g);

@@ -1,21 +1,24 @@
 package tk.zielony.randomdata;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import android.util.Log;
+
+import org.apache.commons.lang3.ClassUtils;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import tk.zielony.randomdata.annotation.GenerateType;
 import tk.zielony.randomdata.annotation.Ignore;
@@ -23,71 +26,107 @@ import tk.zielony.randomdata.annotation.RandomSize;
 
 public class RandomData {
 
-    private static ThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+    private static class GeneratorWithType<Type> {
+        final Class<Type> generatedClass;
+        final Generator<Type> generator;
 
-    private static class GeneratorWithPriority implements Comparable<GeneratorWithPriority> {
-        Generator generator;
-        Priority priority;
-
-        GeneratorWithPriority(Generator generator, Priority priority) {
+        public GeneratorWithType(Class<Type> generatedClass, Generator<Type> generator) {
+            this.generatedClass = generatedClass;
             this.generator = generator;
-            this.priority = priority;
-        }
-
-        @Override
-        public int compareTo(@NonNull GeneratorWithPriority generatorWithPriority) {
-            return generatorWithPriority.priority.getValue() - priority.getValue();
         }
     }
 
-    private List<GeneratorWithPriority> generators = new ArrayList<>();
-    private Map<Class, OnGenerateObjectListener> preListeners = new HashMap<>();
+    private List<GeneratorWithType> generators = new ArrayList<>();
+    private Map<Class, ParameterFactory> factories = new HashMap<>();
     private Map<Class, OnObjectGeneratedListener> postListeners = new HashMap<>();
     private Random random = new Random();
 
-    public void addGenerators(Generator[] generators) {
-        for (Generator g : generators)
-            this.generators.add(new GeneratorWithPriority(g, Priority.Normal));
-        Collections.sort(this.generators);
+    public RandomData() {
+        factories.put(String.class, () -> "");
+        factories.put(Drawable.class, ShapeDrawable::new);
+        factories.put(Date.class, Date::new);
     }
 
-    public void addGenerators(Generator[] generators, Priority priority) {
-        for (Generator g : generators)
-            this.generators.add(new GeneratorWithPriority(g, priority));
-        Collections.sort(this.generators);
+    /**
+     * Add a generator to generate values for fields.
+     * The field type doesn't have to exactly match the provided type - it has to be 'assignable'.
+     * For example Float generators will work fine with float and Double fields.
+     *
+     * @param aClass    a type to handle using the provided generator
+     * @param generator a generator
+     * @param <Type>
+     */
+    public <Type> void addGenerator(@NonNull Class<Type> aClass, @NonNull Generator<Type> generator) {
+        generators.add(new GeneratorWithType(aClass, generator));
+        if (generator.usableAsFactory() && !factories.containsKey(aClass))
+            setParameterFactory(aClass, generator::next);
     }
 
-    public void addGenerator(Generator generator) {
-        generators.add(new GeneratorWithPriority(generator, Priority.Normal));
-        Collections.sort(this.generators);
+    /**
+     * Set a factory used to provide default (empty) values for non-parameterless constructors.
+     * The parameter type doesn't have to exactly match the provided type - it has to be 'assignable'.
+     * For example Float factories will work fine with float and Double parameters.
+     *
+     * @param aClass           a type to handle using the provided parameterFactory
+     * @param parameterFactory a parameter factory
+     * @param <Type>
+     */
+    public <Type> void setParameterFactory(@NonNull Class<Type> aClass, @NonNull ParameterFactory<Type> parameterFactory) {
+        factories.put(aClass, parameterFactory);
     }
 
-    public void addGenerator(Generator generator, Priority priority) {
-        generators.add(new GeneratorWithPriority(generator, priority));
-        Collections.sort(this.generators);
-    }
-
-    public <Type> Type generate(Class<Type> aClass) {
+    /**
+     * Generate an object using provided generators and parameter factories. Non-parameterless constructors
+     * are supported. RandomData fills all non-final and non-static fields using reflection.
+     *
+     * @param aClass a type of an object to generate
+     * @param <Type>
+     * @return the generated object
+     */
+    @NonNull
+    public <Type> Type generate(@NonNull Class<Type> aClass) {
         return generate(aClass, new DataContext());
     }
 
-    public <Type> Type generate(Class<Type> aClass, DataContext context) {
+    @NonNull
+    public <Type> Type generate(@NonNull Class<Type> aClass, DataContext context) {
+        Type instance = null;
         try {
-            OnGenerateObjectListener listener = preListeners.get(aClass);
-            if (listener != null)
-                listener.onGenerateObject();
-            Type instance = aClass.newInstance();
-            fill(instance, context);
-            OnObjectGeneratedListener<Type> listener2 = postListeners.get(aClass);
-            if (listener2 != null)
-                listener2.onObjectGenerated(instance);
-            return instance;
-        } catch (InstantiationException e) {
-            Log.e("RandomData", "No 0-argument constructor or an exception during object construction of type " + aClass.getName());
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            instance = aClass.newInstance();
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException e) {
+            Constructor<?>[] constructors = aClass.getConstructors();
+            for (Constructor constructor : constructors) {
+                Object[] params = new Object[constructor.getParameterTypes().length];
+                for (int i = 0; i < params.length; i++) {
+                    try {
+                        params[i] = generate(constructor.getParameterTypes()[i]);
+                    } catch (Exception ex) {
+                        params[i] = null;
+                        for (Class c : factories.keySet()) {
+                            if (ClassUtils.isAssignable(c, constructor.getParameterTypes()[i], true)) {
+                                params[i] = factories.get(c).make();
+                                break;
+                            }
+                        }
+                    }
+                }
+                try {
+                    instance = (Type) constructor.newInstance(params);
+                    break;
+                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
+
+        if (instance == null)
+            throw new RuntimeException("Unable to instantiate an object of type " + aClass.getName());
+
+        fill(instance, context);
+        OnObjectGeneratedListener<Type> listener2 = postListeners.get(aClass);
+        if (listener2 != null)
+            listener2.onObjectGenerated(instance);
+        return instance;
     }
 
     public <Type> Type[] generateArray(Class<Type> aClass, int size) {
@@ -120,7 +159,7 @@ public class RandomData {
         if (target.getClass().isArray()) {
             fillArray((Object[]) target, context);
         } else if (List.class.isAssignableFrom(target.getClass())) {
-            fillList((List) target, context);
+            fillIterable((List) target, context);
         } else if (!(target instanceof Iterable)) {
             fillObject(target, context);
         }
@@ -169,8 +208,8 @@ public class RandomData {
                 e.printStackTrace();
             }
         } else {
-            for (GeneratorWithPriority g : generators) {
-                if (g.generator.match(f)) {
+            for (GeneratorWithType g : generators) {
+                if (ClassUtils.isAssignable(g.generatedClass, f.getType(), true) && g.generator.match(f)) {
                     try {
                         f.set(target, g.generator.next(context));
                         return;
@@ -214,36 +253,14 @@ public class RandomData {
         }
     }
 
-    private void fillList(Iterable target, DataContext context) {
+    private void fillIterable(Iterable target, DataContext context) {
         for (Object o : target)
             fill(o, context);
     }
 
-    public void fillAsync(@NonNull Object target, @Nullable OnFillCompletedListener listener) {
-        executor.execute(() -> {
-            fill(target);
-            if (listener != null)
-                listener.onFillCompleted();
-        });
-    }
-
     public void reset() {
-        for (GeneratorWithPriority g : generators)
+        for (GeneratorWithType g : generators)
             g.generator.reset();
-    }
-
-    public <Type> void reset(Class<Type> aClass) {
-        for (GeneratorWithPriority g : generators)
-            if (g.generator.getClass() == aClass)
-                g.generator.reset();
-    }
-
-    public <Type> void addOnGenerateObjectListener(Class<Type> aClass, OnGenerateObjectListener listener) {
-        preListeners.put(aClass, listener);
-    }
-
-    public <Type> void removeOnGenerateObjectListener(Class<Type> aClass) {
-        preListeners.remove(aClass);
     }
 
     public <Type> void addOnObjectGeneratedListener(Class<Type> aClass, OnObjectGeneratedListener listener) {

@@ -1,15 +1,11 @@
 package tk.zielony.randomdata.food;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
 import tk.zielony.randomdata.DataContext;
-import tk.zielony.randomdata.Generator;
+import tk.zielony.randomdata.GeneratorWithDuplicates;
 import tk.zielony.randomdata.Matcher;
 
-public class StringFruitGenerator extends Generator<String> {
-    private String[] fruits = {"Apple", "Apricot", "Avocado", "Banana", "Bilberry", "Blackberry", "Blackcurrant", "Blueberry",
+public class StringFruitGenerator extends GeneratorWithDuplicates<String> {
+    private static String[] fruits = {"Apple", "Apricot", "Avocado", "Banana", "Bilberry", "Blackberry", "Blackcurrant", "Blueberry",
             "Boysenberry", "Currant", "Cherry", "Cherimoya", "Cloudberry", "Coconut", "Cranberry", "Cucumber", "Custard apple",
             "Damson", "Date", "Dragonfruit", "Durian", "Elderberry", "Feijoa", "Fig", "Goji berry", "Gooseberry", "Grape",
             "Raisin", "Grapefruit", "Guava", "Honeyberry", "Huckleberry", "Jabuticaba", "Jackfruit", "Jambul",
@@ -21,17 +17,12 @@ public class StringFruitGenerator extends Generator<String> {
             "Salal berry", "Salak", "Satsuma", "Soursop", "Star fruit", "Solanum quitoense", "Strawberry", "Tamarillo",
             "Tamarind", "Ugli fruit", "Yuzu"};
 
-    private Random random = new Random();
-    private boolean preventDuplicates;
-
-    private Set<String> used = new HashSet<>();
-
     public StringFruitGenerator() {
-        preventDuplicates = true;
+        super(fruits.length);
     }
 
     public StringFruitGenerator(boolean preventDuplicates) {
-        this.preventDuplicates = preventDuplicates;
+        super(fruits.length, preventDuplicates);
     }
 
     @Override
@@ -40,28 +31,7 @@ public class StringFruitGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(DataContext context) {
-        String name;
-        if (preventDuplicates) {
-            if (used.size() == fruits.length)
-                used.clear();
-            do {
-                name = next2();
-            }
-            while (used.contains(name));
-            used.add(name);
-        } else {
-            name = next2();
-        }
-        return name;
-    }
-
-    private String next2() {
-        return fruits[random.nextInt(fruits.length)];
-    }
-
-    @Override
-    public void reset() {
-        used.clear();
+    public String next(DataContext context) {
+        return fruits[nextIndex()];
     }
 }

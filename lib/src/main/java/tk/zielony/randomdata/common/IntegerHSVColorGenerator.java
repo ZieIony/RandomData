@@ -29,12 +29,12 @@ public class IntegerHSVColorGenerator extends Generator<Integer> {
 
     /**
      * Both arrays can be 2 or 3 elements long. Depending on the length, arrays will be
-     * interpreted as [h, v] or [h, s,v]
+     * interpreted as [h, v] or [h, s, v]
      *
      * @param min
      * @param max
      */
-    public IntegerHSVColorGenerator(int minA, float min[], int maxA, float max[]) {
+    public IntegerHSVColorGenerator(int minA, float[] min, int maxA, float[] max) {
         if (min.length != max.length)
             throw new IllegalArgumentException("min.length != max.length");
         if (min.length < 2 || min.length > 3)
@@ -58,7 +58,7 @@ public class IntegerHSVColorGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer nextInternal(DataContext context) {
+    public Integer next(DataContext context) {
         if (grayscale) {
             float h = random.nextFloat() * (maxH - minH) + minH;
             float v = random.nextFloat() * (maxV - minV) + maxV;

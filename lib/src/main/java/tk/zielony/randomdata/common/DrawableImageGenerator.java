@@ -39,7 +39,7 @@ public class DrawableImageGenerator extends Generator<Drawable> {
     }
 
     @Override
-    public Drawable nextInternal(DataContext dataContext) {
+    public Drawable next(DataContext dataContext) {
         return context.getResources().getDrawable(next2());
     }
 

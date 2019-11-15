@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
@@ -34,9 +36,14 @@ dependencies {
     implementation 'de.greenrobot:androidsvg:1.2.2-beta-1-tweaked-2'
     implementation 'com.annimon:stream:1.2.1'
 
-    implementation 'com.github.zieiony.carbon:carbon:87415e58f8'
+    implementation 'com.github.zieiony.carbon:carbon:f350e6117a'
 
     implementation project(':finance')
     implementation project(':person')
     implementation project(':lib')
+    compile "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

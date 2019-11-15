@@ -19,8 +19,6 @@ public class StringCardNumberGenerator extends Generator<String> {
         }
     }
 
-    private Random random = new Random();
-
     private static BIN[] bins = {
             new BIN("MasterCard", 51, 16),
             new BIN("MasterCard", 52, 16),
@@ -32,13 +30,15 @@ public class StringCardNumberGenerator extends Generator<String> {
             new BIN("American Express", 37, 15)
     };
 
+    private Random random = new Random();
+
     @Override
     protected Matcher getDefaultMatcher() {
         return f -> f.getName().contains("number");
     }
 
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         BIN bin = bins[random.nextInt(bins.length)];
         StringBuilder builder = new StringBuilder();
         builder.append(bin.number);

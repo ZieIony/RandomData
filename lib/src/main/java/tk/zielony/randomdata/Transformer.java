@@ -1,5 +1,5 @@
 package tk.zielony.randomdata;
 
-public interface Transformer<Type> {
-    Type transform(Type value);
+public interface Transformer<InType, OutType> {
+    OutType transform(InType value);
 }

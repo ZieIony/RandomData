@@ -14,8 +14,9 @@ public class StringPhoneGenerator extends Generator<String> {
         return f -> f.getName().contains("phone");
     }
 
+    // TODO: support country code stored in DataContext
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         return ""+(random.nextInt(900000000) + 1000000000);
     }
 }

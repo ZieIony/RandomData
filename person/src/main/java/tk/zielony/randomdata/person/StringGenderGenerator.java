@@ -15,7 +15,7 @@ public class StringGenderGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         if (context != null && context.get(PersonDataContext.GENDER) != null) {
             return ((Gender) context.get(PersonDataContext.GENDER)).name();
         } else {

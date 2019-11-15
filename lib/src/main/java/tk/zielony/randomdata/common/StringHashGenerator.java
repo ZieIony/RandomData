@@ -24,7 +24,7 @@ public class StringHashGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         char[] hash = new char[length];
         for (int i = 0; i < hash.length; i++)
             hash[i] = (char) (random.nextBoolean() ? random.nextInt('9' - '0') + '0' : random.nextInt('z' - 'a') + 'a');

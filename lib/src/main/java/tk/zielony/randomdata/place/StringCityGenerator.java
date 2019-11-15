@@ -17,7 +17,7 @@ public class StringCityGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         return names[random.nextInt(names.length)];
     }
 }

@@ -15,7 +15,7 @@ public class DoubleLongitudeGenerator extends Generator<Double> {
     }
 
     @Override
-    public Double nextInternal(DataContext context) {
+    public Double next(DataContext context) {
         return random.nextDouble();
     }
 }

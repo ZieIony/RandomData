@@ -19,7 +19,7 @@ public class FloatAmountGenerator extends AmountGenerator<Float> {
     }
 
     @Override
-    public Float nextInternal(DataContext context) {
+    public Float next(DataContext context) {
         return next2(context);
     }
 }

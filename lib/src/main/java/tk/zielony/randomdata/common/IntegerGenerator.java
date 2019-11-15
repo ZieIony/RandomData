@@ -26,7 +26,12 @@ public class IntegerGenerator extends Generator<Integer> {
     }
 
     @Override
-    public Integer nextInternal(DataContext context) {
+    public Integer next(DataContext context) {
         return array != null ? array[random.nextInt(array.length)] : random.nextInt(max + 1 - min) + min;
+    }
+
+    @Override
+    public boolean usableAsFactory() {
+        return true;
     }
 }

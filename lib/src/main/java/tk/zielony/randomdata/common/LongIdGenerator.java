@@ -23,7 +23,7 @@ public class LongIdGenerator extends Generator<Long> {
     }
 
     @Override
-    public Long nextInternal(DataContext context) {
+    public Long next(DataContext context) {
         return id++;
     }
 

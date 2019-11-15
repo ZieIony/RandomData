@@ -59,8 +59,8 @@ public class StringIPAddressGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(@Nullable DataContext context) {
-        return String.valueOf(generateInitialSection()) +
+    public String next(@Nullable DataContext context) {
+        return generateInitialSection() +
                 "." + generateSubSection() +
                 "." + generateSubSection() +
                 "." + generateSubSection();

@@ -21,10 +21,10 @@ public class StringEmailGenerator extends Generator<String> {
     }
 
     @Override
-    public String nextInternal(DataContext context) {
+    public String next(DataContext context) {
         String name = context != null ? context.get(DataContext.NAME) : null;
         if (name == null) {
-            name = nameGenerator.nextInternal(context);
+            name = nameGenerator.next(context);
             if (context != null)
                 context.set(DataContext.NAME, name);
         }

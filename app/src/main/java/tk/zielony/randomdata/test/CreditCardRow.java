@@ -17,7 +17,7 @@ class CreditCardRow extends DataBindingComponent<CreditCardItem> {
     public void bind(CreditCardItem data) {
         super.bind(data);
         LinearLayout scrim = ((CreditcardBinding) getBinding()).scrim;
-        int mutedColor = Palette.from(((BitmapDrawable)data.image).getBitmap()).generate().getMutedColor(0);
+        int mutedColor = Palette.from(((BitmapDrawable) data.getImage()).getBitmap()).generate().getMutedColor(0);
         scrim.setBackgroundColor(mutedColor);
     }
 }

@@ -9,48 +9,63 @@ Before you start, make sure to check out https://www.pexels.com/ - very nice sit
 
 ### Setup
 
-Add JitPack to your main build.gradle:
-
-    allprojects {
-        repositories {
-            maven { url 'https://jitpack.io' }
-        }
-    }
+Visit [Jitpack](https://jitpack.io/#zieiony/randomdata) for installation instructions.
     
 Add RandomData to your project's dependencies. Select only modules you need (because of their size):
     
     dependencies {
-        compile 'com.github.ZieIony.RandomData:person:4e90951628'
+        implementation 'com.github.ZieIony.RandomData:person:-SNAPSHOT'
     }
 
 ### Usage
 
 Prepare a data class:
 
-    public class User{
-        Drawable avatar;
-        String name, subtext, date;
-        
-        @Ignore
-        Parcelable parcelable;  // don't fill this field
-        
-        final static int TYPE_ID = 5;   // ignored automatically
-    }
+```Java
+public class User{
+    Drawable avatar;
+    String name, subtext, date;
+    
+    @Ignore
+    Parcelable parcelable;  // don't fill this field
+    
+    final static int TYPE_ID = 5;   // ignored automatically
+}
+```
+
+```Kotlin
+data class CreditCardItem(
+        var name: String,
+        var number: String,
+        var amount: String,
+        var image: Drawable,
+        var validity: Validity,
+) : Serializable
+```
 
 Setup RandomData with generators you need:
 
-    RandomData randomData = new RandomData();
-    randomData.addGenerators(new Generator[]{
-        new StringNameGenerator(Gender.Both)),
-        new TextGenerator().withMatcher(f -> f.getName().equals("subtext")),
-        new DrawableAvatarGenerator(this),
-        new StringDateGenerator()
-    });
+```Java
+randomData = new RandomData();
+randomData.addGenerator(String.class, new StringNameGenerator(Gender.Both).withMatcher(f -> f.getName().equals("text") && f.getDeclaringClass().equals(DefaultAvatarTextSubtextDateItem.class) || f.getName().equals("name")));
+randomData.addGenerator(String.class, new TextGenerator().withMatcher(f -> f.getName().equals("subtext")));
+randomData.addGenerator(Drawable.class, new DrawableAvatarGenerator(this));
+randomData.addGenerator(String.class, new DateGenerator().withTransformer(new DateToStringTransformer()));
+randomData.addGenerator(String.class, new StringCardNumberGenerator());
+randomData.addGenerator(String.class, new StringAmountGenerator());
+randomData.addGenerator(Drawable.class, new DrawableImageGenerator(this).withMatcher(f -> f.getName().equals("image")));
+randomData.addGenerator(Validity.class, new EnumGenerator<>(Validity.class));
+randomData.addGenerator(Float.class, new FloatGenerator());
+```
 
-Fill your objects with data. There's no need to initialize arrays:
+Fill or generate your objects with data. There's no need to initialize arrays:
 
-    User[] items = new User[10];
-    randomData.fill(items);
+```Java
+User[] items = new User[10];
+randomData.fill(items);
+
+CreditCardItem creditCard = randomData.generate(CreditCardItem.class);
+```
 
 ### Modules
 
