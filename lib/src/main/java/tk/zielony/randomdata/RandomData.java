@@ -16,9 +16,11 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import tk.zielony.randomdata.annotation.GenerateType;
 import tk.zielony.randomdata.annotation.Ignore;
@@ -42,9 +44,15 @@ public class RandomData {
     private Random random = new Random();
 
     public RandomData() {
+        factories.put(boolean.class, () -> false);
+        factories.put(int.class, () -> 0);
+        factories.put(float.class, () -> 0.0f);
         factories.put(String.class, () -> "");
         factories.put(Drawable.class, ShapeDrawable::new);
         factories.put(Date.class, Date::new);
+        factories.put(List.class, ArrayList::new);
+        factories.put(Map.class, HashMap::new);
+        factories.put(Set.class, HashSet::new);
     }
 
     /**
