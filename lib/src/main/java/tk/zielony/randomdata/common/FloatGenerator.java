@@ -29,9 +29,4 @@ public class FloatGenerator extends Generator<Float> {
     public Float next(DataContext context) {
         return array != null ? array[random.nextInt(array.length)] : random.nextFloat() * (max - min) + min;
     }
-
-    @Override
-    public boolean usableAsFactory() {
-        return true;
-    }
 }

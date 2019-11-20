@@ -22,7 +22,7 @@ public class TextGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("description") || f.getName().contains("text");
+        return f -> f.getName() != null && (f.getName().contains("description") || f.getName().contains("text"));
     }
 
     @Override

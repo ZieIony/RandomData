@@ -19,9 +19,4 @@ public class EnumGenerator<Type extends Enum<Type>> extends Generator<Type> {
     public Type next(@Nullable DataContext context) {
         return type.getEnumConstants()[random.nextInt(type.getEnumConstants().length)];
     }
-
-    @Override
-    public boolean usableAsFactory() {
-        return true;
-    }
 }

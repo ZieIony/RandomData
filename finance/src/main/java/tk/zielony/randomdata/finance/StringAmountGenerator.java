@@ -18,7 +18,7 @@ public class StringAmountGenerator extends AmountGenerator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("amount");
+        return f -> f.getName() != null && f.getName().contains("amount");
     }
 
     @Override

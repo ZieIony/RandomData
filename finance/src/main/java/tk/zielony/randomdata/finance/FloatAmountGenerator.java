@@ -15,7 +15,7 @@ public class FloatAmountGenerator extends AmountGenerator<Float> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("amount");
+        return f -> f.getName() != null && f.getName().contains("amount");
     }
 
     @Override

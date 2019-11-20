@@ -34,7 +34,7 @@ public class StringCardNumberGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("number");
+        return f -> f.getName() != null && f.getName().contains("number");
     }
 
     @Override

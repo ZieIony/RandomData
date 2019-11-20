@@ -5,10 +5,10 @@ import android.graphics.drawable.Drawable
 import java.io.Serializable
 
 data class CreditCardItem(
-        var name: String,
-        var number: String,
-        var amount: String,
-        var image: Drawable,
-        var validity: Validity,
-        var testDouble: Double
+        val name: String,
+        val number: String,
+        val amount: String,
+        val image: Drawable,
+        val validity: Validity,
+        val testDouble: Double
 ) : Serializable

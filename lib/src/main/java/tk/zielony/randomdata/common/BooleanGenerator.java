@@ -12,9 +12,4 @@ public class BooleanGenerator extends Generator<Boolean> {
     public Boolean next(DataContext context) {
         return random.nextBoolean();
     }
-
-    @Override
-    public boolean usableAsFactory() {
-        return true;
-    }
 }

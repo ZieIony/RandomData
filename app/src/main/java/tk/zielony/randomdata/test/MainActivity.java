@@ -33,7 +33,7 @@ import tk.zielony.randomdata.person.StringNameGenerator;
 import tk.zielony.randomdata.transformer.DateToStringTransformer;
 
 public class MainActivity extends AppCompatActivity {
-    RowListAdapter adapter;
+    RowListAdapter<Serializable> adapter;
     private RandomData randomData;
     private SwipeRefreshLayout swipeRefresh;
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RowListAdapter();
+        adapter = new RowListAdapter<>();
         adapter.putFactory(DefaultAvatarTextSubtextDateItem.class, AvatarTextSubtext2DateRow::new);
         adapter.putFactory(DefaultHeaderItem.class, HeaderRow::new);
         adapter.putFactory(CreditCardItem.class, CreditCardRow::new);
@@ -52,17 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(this::fillItems);
-
-        randomData = new RandomData();
-        randomData.addGenerator(String.class, new StringNameGenerator(Gender.Both).withMatcher(f -> f.getName().equals("text") && f.getDeclaringClass().equals(DefaultAvatarTextSubtextDateItem.class) || f.getName().equals("name")));
-        randomData.addGenerator(String.class, new TextGenerator().withMatcher(f -> f.getName().equals("subtext")));
-        randomData.addGenerator(Drawable.class, new DrawableAvatarGenerator(this));
-        randomData.addGenerator(String.class, new DateGenerator().withTransformer(new DateToStringTransformer()));
-        randomData.addGenerator(String.class, new StringCardNumberGenerator());
-        randomData.addGenerator(String.class, new StringAmountGenerator());
-        randomData.addGenerator(Drawable.class, new DrawableImageGenerator(this).withMatcher(f -> f.getName().equals("image")));
-        randomData.addGenerator(Validity.class, new EnumGenerator<>(Validity.class));
-        randomData.addGenerator(Float.class, new FloatGenerator());
 
         swipeRefresh.setRefreshing(true);
         fillItems();
@@ -74,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 List<Serializable> items;
                 if (Math.random() > 0.5) {
+                    randomData = new RandomData();
+                    randomData.addGenerator(String.class, new StringNameGenerator(Gender.Both).withMatcher(f -> "text".equals(f.getName()) && f.getDeclaringClass().equals(DefaultAvatarTextSubtextDateItem.class)));
+                    randomData.addGenerator(String.class, new TextGenerator().withMatcher(f -> "subtext".equals(f.getName())));
+                    randomData.addGenerator(Drawable.class, new DrawableAvatarGenerator(MainActivity.this));
+                    randomData.addGenerator(String.class, new DateGenerator().withTransformer(new DateToStringTransformer()));
+
                     items = Arrays.asList(
                             new DefaultHeaderItem("Header"),
                             new DefaultAvatarTextSubtextDateItem(),
@@ -92,6 +87,15 @@ public class MainActivity extends AppCompatActivity {
                             new DefaultAvatarTextSubtextDateItem());
                     randomData.fill(items);
                 } else {
+                    randomData = new RandomData();
+                    randomData.addGenerator(String.class, new StringNameGenerator(Gender.Both));
+                    randomData.addGenerator(String.class, new DateGenerator().withTransformer(new DateToStringTransformer()));
+                    randomData.addGenerator(String.class, new StringCardNumberGenerator());
+                    randomData.addGenerator(String.class, new StringAmountGenerator());
+                    randomData.addGenerator(Drawable.class, new DrawableImageGenerator(MainActivity.this));
+                    randomData.addGenerator(Validity.class, new EnumGenerator<>(Validity.class));
+                    randomData.addGenerator(Float.class, new FloatGenerator());
+
                     items = new ArrayList<>(randomData.generateList(CreditCardItem.class, 10));
                 }
                 runOnUiThread(() -> {

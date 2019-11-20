@@ -54,7 +54,7 @@ public class IntegerRGBColorGenerator extends Generator<Integer> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("color");
+        return f -> f.getName() != null && f.getName().contains("color");
     }
 
     @Override

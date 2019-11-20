@@ -5,7 +5,6 @@ import java.util.Random;
 
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
-import tk.zielony.randomdata.Matcher;
 
 public class DateGenerator extends Generator<Date> {
     private Random random = new Random();
@@ -21,11 +20,6 @@ public class DateGenerator extends Generator<Date> {
     public DateGenerator(Date startDate, Date endDate) {
         this.startDate = Math.min(startDate.getTime(), endDate.getTime());
         this.endDate = Math.max(startDate.getTime(), endDate.getTime());
-    }
-
-    @Override
-    protected Matcher getDefaultMatcher() {
-        return f -> f.getName().equals("date");
     }
 
     @Override

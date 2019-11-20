@@ -13,7 +13,7 @@ public class StringLastNameGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("lastName");
+        return f -> f.getName() != null && f.getName().contains("lastName");
     }
 
     @Override

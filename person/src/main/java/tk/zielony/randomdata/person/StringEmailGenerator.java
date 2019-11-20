@@ -17,7 +17,7 @@ public class StringEmailGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> getClass().getName().contains("email");
+        return f -> f.getName() != null && f.getName().contains("email");
     }
 
     @Override

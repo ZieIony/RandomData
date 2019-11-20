@@ -26,7 +26,7 @@ public abstract class AmountGenerator<Type> extends Generator<Type> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("amount");
+        return f -> f.getName() != null && f.getName().contains("amount");
     }
 
     public float next2(DataContext context) {

@@ -11,7 +11,7 @@ public class DoubleAltitudeGenerator extends Generator<Double> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("alt");
+        return f -> f.getName() != null && f.getName().contains("alt");
     }
 
     @Override

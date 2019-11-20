@@ -4,9 +4,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.ClassUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,53 +42,128 @@ public class RandomData {
     }
 
     private List<GeneratorWithType> generators = new ArrayList<>();
-    private Map<Class, ParameterFactory> factories = new HashMap<>();
     private Map<Class, OnObjectGeneratedListener> postListeners = new HashMap<>();
     private Random random = new Random();
 
     public RandomData() {
-        factories.put(boolean.class, () -> false);
-        factories.put(int.class, () -> 0);
-        factories.put(float.class, () -> 0.0f);
-        factories.put(String.class, () -> "");
-        factories.put(Drawable.class, ShapeDrawable::new);
-        factories.put(Date.class, Date::new);
-        factories.put(List.class, ArrayList::new);
-        factories.put(Map.class, HashMap::new);
-        factories.put(Set.class, HashSet::new);
+        addGenerator(boolean.class, () -> false);
+        addGenerator(int.class, () -> 0);
+        addGenerator(float.class, () -> 0.0f);
+        addGenerator(String.class, () -> "");
+        addGenerator(Drawable.class, ShapeDrawable::new);
+        addGenerator(Date.class, Date::new);
+        addGenerator(List.class, ArrayList::new);
+        addGenerator(Map.class, HashMap::new);
+        addGenerator(Set.class, HashSet::new);
     }
 
     /**
      * Add a generator to generate values for fields.
      * The field type doesn't have to exactly match the provided type - it has to be 'assignable'.
      * For example Float generators will work fine with float and Double fields.
+     * Generators work for constructor parameters and writable, non-static fields.
      *
      * @param aClass    a type to handle using the provided generator
      * @param generator a generator
      * @param <Type>
      */
     public <Type> void addGenerator(@NonNull Class<Type> aClass, @NonNull Generator<Type> generator) {
-        generators.add(new GeneratorWithType(aClass, generator));
-        if (generator.usableAsFactory() && !factories.containsKey(aClass))
-            setParameterFactory(aClass, generator::next);
+        generators.add(0, new GeneratorWithType<>(aClass, generator));
     }
 
     /**
-     * Set a factory used to provide default (empty) values for non-parameterless constructors.
-     * The parameter type doesn't have to exactly match the provided type - it has to be 'assignable'.
-     * For example Float factories will work fine with float and Double parameters.
+     * Add a simple generator to generate values for fields.
+     * The field type doesn't have to exactly match the provided type - it has to be 'assignable'.
+     * For example Float generators will work fine with float and Double fields.
+     * Generators work for constructor parameters and writable, non-static fields.
      *
-     * @param aClass           a type to handle using the provided parameterFactory
-     * @param parameterFactory a parameter factory
+     * @param aClass    a type to handle using the provided generator
+     * @param generator a generator
      * @param <Type>
      */
-    public <Type> void setParameterFactory(@NonNull Class<Type> aClass, @NonNull ParameterFactory<Type> parameterFactory) {
-        factories.put(aClass, parameterFactory);
+    public <Type> void addGenerator(@NonNull Class<Type> aClass, @NonNull SimpleGenerator<Type> generator) {
+        generators.add(0, new GeneratorWithType<>(aClass, new Generator<Type>() {
+            @Override
+            public Type next(@Nullable DataContext context) {
+                return generator.next();
+            }
+        }));
+    }
+
+    private ConstructorWithParameters getDataConstructor(@NonNull Class aClass) {
+        Constructor[] constructors = aClass.getConstructors();
+        Field[] fields = aClass.getDeclaredFields();
+        constructorLoop:
+        for (Constructor constructor : constructors) {
+            Class[] parameterTypes = constructor.getParameterTypes();
+            if (parameterTypes.length != fields.length)
+                continue;
+            for (int i = 0; i < parameterTypes.length; i++) {
+                if (parameterTypes[i] != fields[i].getType())
+                    continue constructorLoop;
+            }
+            Target[] parameters = new Target[parameterTypes.length];
+            Annotation[][] annotations = constructor.getParameterAnnotations();
+            for (int i = 0; i < parameterTypes.length; i++)
+                parameters[i] = new Target(fields[i].getName(), annotations[i], parameterTypes[i], aClass);
+            return new ConstructorWithParameters(constructor, parameters);
+        }
+
+        return null;
+    }
+
+    private <Type> Type makeInstance(ConstructorWithParameters constructor, DataContext context) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Object[] params = new Object[constructor.getParameters().length];
+        for (int i = 0; i < params.length; i++) {
+            Target target = constructor.getParameters()[i];
+            for (GeneratorWithType g : generators) {
+                if (ClassUtils.isAssignable(g.generatedClass, target.getType(), true) && g.generator.match(target)) {
+                    params[i] = g.generator.next(context);
+                    break;
+                }
+            }
+        }
+        return (Type) constructor.getConstructor().newInstance(params);
+    }
+
+    private <Type> Type makeInstance(@NonNull Class<Type> aClass, DataContext context) throws InstantiationException {
+        try {
+            return aClass.newInstance();
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException e) {
+        }
+        ConstructorWithParameters dataConstructor = getDataConstructor(aClass);
+        try {
+            if (dataConstructor != null)
+                return makeInstance(dataConstructor, context);
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException ex) {
+        }
+        List<Constructor> constructors = new ArrayList<>();
+        for (Constructor constructor : aClass.getConstructors()) {
+            if (dataConstructor != null && dataConstructor.getConstructor() == constructor)
+                continue;
+            constructors.add(constructor);
+        }
+        Collections.sort(constructors, (o1, o2) -> o2.getParameterTypes().length - o1.getParameterTypes().length);
+        for (Constructor constructor : constructors) {
+            Class[] parameterTypes = constructor.getParameterTypes();
+            Target[] parameters = new Target[parameterTypes.length];
+            Annotation[][] annotations = constructor.getParameterAnnotations();
+            for (int i = 0; i < parameterTypes.length; i++)
+                parameters[i] = new Target(annotations[i], parameterTypes[i], aClass);
+            try {
+                return makeInstance(new ConstructorWithParameters(constructor, parameters), context);
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            }
+        }
+
+        throw new InstantiationException("Unable to instantiate an object of type " + aClass.getName());
     }
 
     /**
      * Generate an object using provided generators and parameter factories. Non-parameterless constructors
-     * are supported. RandomData fills all non-final and non-static fields using reflection.
+     * are supported. RandomData fills all non-final and non-static fields using reflection. Constructors
+     * are used in the following order: 0-parameter, data, first longest, other
      *
      * @param aClass a type of an object to generate
      * @param <Type>
@@ -98,37 +176,12 @@ public class RandomData {
 
     @NonNull
     public <Type> Type generate(@NonNull Class<Type> aClass, DataContext context) {
-        Type instance = null;
+        Type instance;
         try {
-            instance = aClass.newInstance();
-        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException e) {
-            Constructor<?>[] constructors = aClass.getConstructors();
-            for (Constructor constructor : constructors) {
-                Object[] params = new Object[constructor.getParameterTypes().length];
-                for (int i = 0; i < params.length; i++) {
-                    try {
-                        params[i] = generate(constructor.getParameterTypes()[i]);
-                    } catch (Exception ex) {
-                        params[i] = null;
-                        for (Class c : factories.keySet()) {
-                            if (ClassUtils.isAssignable(c, constructor.getParameterTypes()[i], true)) {
-                                params[i] = factories.get(c).make();
-                                break;
-                            }
-                        }
-                    }
-                }
-                try {
-                    instance = (Type) constructor.newInstance(params);
-                    break;
-                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            instance = makeInstance(aClass, context);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
         }
-
-        if (instance == null)
-            throw new RuntimeException("Unable to instantiate an object of type " + aClass.getName());
 
         fill(instance, context);
         OnObjectGeneratedListener<Type> listener2 = postListeners.get(aClass);
@@ -212,12 +265,12 @@ public class RandomData {
             try {
                 Class typeClass = (Class) ((ParameterizedType) f.getType().getGenericSuperclass()).getActualTypeArguments()[0];
                 f.set(target, generateList(typeClass, size, context));
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | NullPointerException e) {
                 e.printStackTrace();
             }
         } else {
             for (GeneratorWithType g : generators) {
-                if (ClassUtils.isAssignable(g.generatedClass, f.getType(), true) && g.generator.match(f)) {
+                if (ClassUtils.isAssignable(g.generatedClass, f.getType(), true) && g.generator.match(new Target(f))) {
                     try {
                         f.set(target, g.generator.next(context));
                         return;

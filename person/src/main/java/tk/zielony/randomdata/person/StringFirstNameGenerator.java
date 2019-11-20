@@ -34,7 +34,7 @@ public class StringFirstNameGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("firstName");
+        return f -> f.getName() != null && f.getName().contains("firstName");
     }
 
     @Override

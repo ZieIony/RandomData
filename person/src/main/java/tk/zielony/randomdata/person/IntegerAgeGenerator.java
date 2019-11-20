@@ -14,6 +14,6 @@ public class IntegerAgeGenerator extends IntegerGenerator {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("age");
+        return f -> f.getName() != null && f.getName().contains("age");
     }
 }

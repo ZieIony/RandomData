@@ -13,7 +13,7 @@ public class StringCityGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("city");
+        return f -> f.getName() != null && f.getName().contains("city");
     }
 
     @Override

@@ -11,7 +11,7 @@ public class StringGenderGenerator extends Generator<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().equals("gender") || f.getName().equals("sex");
+        return f -> f.getName() != null && (f.getName().equals("gender") || f.getName().equals("sex"));
     }
 
     @Override

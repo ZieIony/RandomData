@@ -27,7 +27,7 @@ public class StringFruitGenerator extends GeneratorWithDuplicates<String> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("name");
+        return f -> f.getName() != null && f.getName().contains("name");
     }
 
     @Override

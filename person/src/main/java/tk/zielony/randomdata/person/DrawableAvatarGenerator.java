@@ -42,7 +42,7 @@ public class DrawableAvatarGenerator extends Generator<Drawable> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().equals("avatar");
+        return f -> f.getName() != null && f.getName().contains("avatar");
     }
 
     @Override

@@ -2,9 +2,7 @@ package tk.zielony.randomdata;
 
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Field;
-
-public abstract class Generator<Type> {
+public abstract class Generator<Type> implements SimpleGenerator<Type> {
     private Matcher matcher;
 
     protected Matcher getDefaultMatcher() {
@@ -20,10 +18,10 @@ public abstract class Generator<Type> {
         return new GeneratorWithTransformer<>(this, transformer);
     }
 
-    protected boolean match(Field f) {
+    protected boolean match(Target target) {
         if (matcher == null)
             matcher = getDefaultMatcher();
-        return matcher.matches(f);
+        return matcher.matches(target);
     }
 
     public Type next() {
@@ -33,9 +31,5 @@ public abstract class Generator<Type> {
     public abstract Type next(@Nullable DataContext context);
 
     public void reset() {
-    }
-
-    public boolean usableAsFactory() {
-        return false;
     }
 }

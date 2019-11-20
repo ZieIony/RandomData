@@ -11,7 +11,7 @@ public class DoubleLongitudeGenerator extends Generator<Double> {
 
     @Override
     protected Matcher getDefaultMatcher() {
-        return f -> f.getName().contains("lon");
+        return f -> f.getName() != null && f.getName().contains("lon");
     }
 
     @Override

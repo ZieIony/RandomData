@@ -9,7 +9,6 @@ import java.util.Set;
 
 import tk.zielony.randomdata.DataContext;
 import tk.zielony.randomdata.Generator;
-import tk.zielony.randomdata.Matcher;
 import tk.zielony.randomdata.R;
 
 public class DrawableImageGenerator extends Generator<Drawable> {
@@ -31,11 +30,6 @@ public class DrawableImageGenerator extends Generator<Drawable> {
     public DrawableImageGenerator(Context context, boolean preventDuplicates) {
         this.context = context;
         this.preventDuplicates = preventDuplicates;
-    }
-
-    @Override
-    protected Matcher getDefaultMatcher() {
-        return f -> f.getName().equals("image") || f.getName().equals("picture");
     }
 
     @Override
