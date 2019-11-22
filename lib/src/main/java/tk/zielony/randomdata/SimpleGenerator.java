@@ -1,5 +1,5 @@
 package tk.zielony.randomdata;
 
-interface SimpleGenerator<Type> {
+public interface SimpleGenerator<Type> {
     Type next();
 }

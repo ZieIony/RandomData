@@ -23,7 +23,6 @@ import tk.zielony.randomdata.RandomData;
 import tk.zielony.randomdata.common.DateGenerator;
 import tk.zielony.randomdata.common.DrawableImageGenerator;
 import tk.zielony.randomdata.common.EnumGenerator;
-import tk.zielony.randomdata.common.FloatGenerator;
 import tk.zielony.randomdata.common.TextGenerator;
 import tk.zielony.randomdata.finance.StringAmountGenerator;
 import tk.zielony.randomdata.finance.StringCardNumberGenerator;
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     randomData.addGenerator(String.class, new StringAmountGenerator());
                     randomData.addGenerator(Drawable.class, new DrawableImageGenerator(MainActivity.this));
                     randomData.addGenerator(Validity.class, new EnumGenerator<>(Validity.class));
-                    randomData.addGenerator(Float.class, new FloatGenerator());
 
                     items = new ArrayList<>(randomData.generateList(CreditCardItem.class, 10));
                 }

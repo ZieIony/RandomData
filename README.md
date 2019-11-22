@@ -33,13 +33,20 @@ public class User{
 }
 ```
 
+Constructor parameters don't have names on Java below 1.8. Use `RandomValue` annotation to provide names.
+
 ```Kotlin
 data class CreditCardItem(
-        var name: String,
-        var number: String,
-        var amount: String,
-        var image: Drawable,
-        var validity: Validity,
+        @RandomValue(name = "name")
+        val name: String,
+        @RandomValue(name = "number")
+        val number: String,
+        @RandomValue(name = "amount")
+        val amount: String,
+        @RandomValue(name = "image")
+        val image: Drawable,
+        @RandomValue(name = "validity")
+        val validity: Validity
 ) : Serializable
 ```
 

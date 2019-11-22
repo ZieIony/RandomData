@@ -14,8 +14,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import tk.zielony.randomdata.annotation.GenerateType;
 import tk.zielony.randomdata.annotation.Ignore;
 import tk.zielony.randomdata.annotation.RandomSize;
 
@@ -90,59 +89,12 @@ public class RandomData {
         }));
     }
 
-    private ConstructorWithParameters getDataConstructor(@NonNull Class aClass) {
-        Constructor[] constructors = aClass.getConstructors();
-        Field[] fields = aClass.getDeclaredFields();
-        constructorLoop:
-        for (Constructor constructor : constructors) {
-            Class[] parameterTypes = constructor.getParameterTypes();
-            if (parameterTypes.length != fields.length)
-                continue;
-            for (int i = 0; i < parameterTypes.length; i++) {
-                if (parameterTypes[i] != fields[i].getType())
-                    continue constructorLoop;
-            }
-            Target[] parameters = new Target[parameterTypes.length];
-            Annotation[][] annotations = constructor.getParameterAnnotations();
-            for (int i = 0; i < parameterTypes.length; i++)
-                parameters[i] = new Target(fields[i].getName(), annotations[i], parameterTypes[i], aClass);
-            return new ConstructorWithParameters(constructor, parameters);
-        }
-
-        return null;
-    }
-
-    private <Type> Type makeInstance(ConstructorWithParameters constructor, DataContext context) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Object[] params = new Object[constructor.getParameters().length];
-        for (int i = 0; i < params.length; i++) {
-            Target target = constructor.getParameters()[i];
-            for (GeneratorWithType g : generators) {
-                if (ClassUtils.isAssignable(g.generatedClass, target.getType(), true) && g.generator.match(target)) {
-                    params[i] = g.generator.next(context);
-                    break;
-                }
-            }
-        }
-        return (Type) constructor.getConstructor().newInstance(params);
-    }
-
     private <Type> Type makeInstance(@NonNull Class<Type> aClass, DataContext context) throws InstantiationException {
         try {
             return aClass.newInstance();
         } catch (IllegalAccessException | IllegalArgumentException | InstantiationException e) {
         }
-        ConstructorWithParameters dataConstructor = getDataConstructor(aClass);
-        try {
-            if (dataConstructor != null)
-                return makeInstance(dataConstructor, context);
-        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException ex) {
-        }
-        List<Constructor> constructors = new ArrayList<>();
-        for (Constructor constructor : aClass.getConstructors()) {
-            if (dataConstructor != null && dataConstructor.getConstructor() == constructor)
-                continue;
-            constructors.add(constructor);
-        }
+        List<Constructor> constructors = new ArrayList<>(Arrays.asList(aClass.getConstructors()));
         Collections.sort(constructors, (o1, o2) -> o2.getParameterTypes().length - o1.getParameterTypes().length);
         for (Constructor constructor : constructors) {
             Class[] parameterTypes = constructor.getParameterTypes();
@@ -151,7 +103,17 @@ public class RandomData {
             for (int i = 0; i < parameterTypes.length; i++)
                 parameters[i] = new Target(annotations[i], parameterTypes[i], aClass);
             try {
-                return makeInstance(new ConstructorWithParameters(constructor, parameters), context);
+                Object[] params = new Object[parameters.length];
+                for (int i = 0; i < params.length; i++) {
+                    Target target = parameters[i];
+                    for (GeneratorWithType g : generators) {
+                        if (ClassUtils.isAssignable(g.generatedClass, target.getType(), true) && g.generator.match(target)) {
+                            params[i] = g.generator.next(context);
+                            break;
+                        }
+                    }
+                }
+                return (Type) constructor.newInstance(params);
             } catch (IllegalAccessException e) {
             } catch (InvocationTargetException e) {
             }
@@ -240,9 +202,10 @@ public class RandomData {
         }
     }
 
-    private void fillValue(Object target, Field f, DataContext context) {
-        if (f.getType().isArray()) {
-            RandomSize annotation = f.getAnnotation(RandomSize.class);
+    private void fillValue(Object obj, Field field, DataContext context) {
+        Target target = new Target(field);
+        if (field.getType().isArray()) {
+            RandomSize annotation = field.getAnnotation(RandomSize.class);
             int size;
             if (annotation != null) {
                 size = random.nextInt(annotation.max() - annotation.min()) + annotation.min();
@@ -250,12 +213,12 @@ public class RandomData {
                 size = random.nextInt(RandomSize.DEFAULT_MAX - RandomSize.DEFAULT_MIN) + RandomSize.DEFAULT_MIN;
             }
             try {
-                f.set(target, generateArray(f.getType().getComponentType(), size, context));
+                field.set(obj, generateArray(target.getType().getComponentType(), size, context));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-        } else if (f.getType().isAssignableFrom(List.class)) {
-            RandomSize annotation = f.getAnnotation(RandomSize.class);
+        } else if (target.getType().isAssignableFrom(List.class)) {
+            RandomSize annotation = field.getAnnotation(RandomSize.class);
             int size;
             if (annotation != null) {
                 size = random.nextInt(annotation.max() - annotation.min()) + annotation.min();
@@ -263,39 +226,31 @@ public class RandomData {
                 size = random.nextInt(RandomSize.DEFAULT_MAX - RandomSize.DEFAULT_MIN) + RandomSize.DEFAULT_MIN;
             }
             try {
-                Class typeClass = (Class) ((ParameterizedType) f.getType().getGenericSuperclass()).getActualTypeArguments()[0];
-                f.set(target, generateList(typeClass, size, context));
+                field.set(obj, generateList(target.getComponentType(), size, context));
             } catch (IllegalAccessException | NullPointerException e) {
                 e.printStackTrace();
             }
         } else {
             for (GeneratorWithType g : generators) {
-                if (ClassUtils.isAssignable(g.generatedClass, f.getType(), true) && g.generator.match(new Target(f))) {
+                if (ClassUtils.isAssignable(g.generatedClass, target.getType(), true) && g.generator.match(target)) {
                     try {
-                        f.set(target, g.generator.next(context));
+                        field.set(obj, g.generator.next(context));
                         return;
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            if (f.getType().isPrimitive() || f.getType().equals(String.class))
+            if (target.getType().isPrimitive() || target.getType().equals(String.class))
                 return;
             try {
-                GenerateType annotation = f.getAnnotation(GenerateType.class);
-                Class type;
-                if (annotation != null) {
-                    type = annotation.type();
-                } else {
-                    type = f.getType();
-                }
-                f.set(target, generate(type, context));
+                field.set(obj, generate(target.getType(), context));
                 return;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
             try {
-                Object object = f.get(target);
+                Object object = field.get(obj);
                 if (object != null)
                     fill(object, context);
             } catch (IllegalAccessException e) {
