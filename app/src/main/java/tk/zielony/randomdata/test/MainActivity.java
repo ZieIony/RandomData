@@ -70,21 +70,20 @@ public class MainActivity extends AppCompatActivity {
 
                     items = Arrays.asList(
                             new DefaultHeaderItem("Header"),
-                            new DefaultAvatarTextSubtextDateItem(),
-                            new DefaultAvatarTextSubtextDateItem(),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
                             new DefaultHeaderItem("Header"),
-                            new DefaultAvatarTextSubtextDateItem(),
-                            new DefaultAvatarTextSubtextDateItem(),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
                             new DefaultHeaderItem("Header"),
-                            new DefaultAvatarTextSubtextDateItem(),
-                            new DefaultAvatarTextSubtextDateItem(),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
                             new DefaultHeaderItem("Header"),
-                            new DefaultAvatarTextSubtextDateItem(),
-                            new DefaultAvatarTextSubtextDateItem(),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
                             new DefaultHeaderItem("Header"),
-                            new DefaultAvatarTextSubtextDateItem(),
-                            new DefaultAvatarTextSubtextDateItem());
-                    randomData.fill(items);
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class),
+                            randomData.generate(DefaultAvatarTextSubtextDateItem.class));
                 } else {
                     randomData = new RandomData();
                     randomData.addGenerator(String.class, new StringNameGenerator(Gender.Both));

@@ -2,8 +2,6 @@ package tk.zielony.randomdata;
 
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.ParameterizedType;
-
 public class GeneratorWithTransformer<InType, OutType> extends Generator<OutType> {
     private Generator<InType> generator;
     private Transformer<InType, OutType> transformer;
@@ -13,8 +11,9 @@ public class GeneratorWithTransformer<InType, OutType> extends Generator<OutType
         this.transformer = transformer;
     }
 
-    public Class<OutType> getGeneratedClass() {
-        return (Class<OutType>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    @Override
+    protected Matcher getDefaultMatcher() {
+        return generator.getDefaultMatcher();
     }
 
     @Override
